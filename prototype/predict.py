@@ -29,8 +29,11 @@ MARKET_WEIGHT = 0.85
 RES = E.ROOT / "results"
 
 
+_TR = str.maketrans({"ø": "o", "Ø": "O", "æ": "ae", "Æ": "AE", "ß": "ss", "đ": "d", "Đ": "D", "ł": "l", "Ł": "L", "ı": "i", "þ": "th", "ð": "d"})
+
+
 def norm_name(x: str) -> str:
-    x = unicodedata.normalize("NFKD", x).encode("ascii", "ignore").decode().lower()
+    x = unicodedata.normalize("NFKD", x.translate(_TR)).encode("ascii", "ignore").decode().lower()
     return " ".join(x.replace("-", " ").replace("'", "").split())
 
 
@@ -43,7 +46,8 @@ def match_name(name: str, cands: dict):
     best, score, tie = None, 0, False
     for k, v in cands.items():
         kt = set(k.split())
-        sc = len(toks & kt) if (toks <= kt or kt <= toks) else (0.5 if n.split()[-1] == k.split()[-1] else 0)
+        one = len(toks) == 1 or len(kt) == 1          # priezvisko samotné stačí len ak jedno z mien je jednoslovné
+        sc = len(toks & kt) if (toks <= kt or kt <= toks) else (0.5 if one and n.split()[-1] == k.split()[-1] else 0)
         if sc > score:
             best, score, tie = v, sc, False
         elif sc == score and sc > 0 and v is not best:
@@ -289,10 +293,12 @@ def predict_match(pr: Predictor, a: dict, lineups: dict | None = None, referee: 
             continue
         pl = []
         team_odds = {k.split(":", 1)[1]: v for k, v in sc_odds.items() if k.startswith(team_id[side] + ":")}
-        for name, epos in names:
+        for idx, (name, epos) in enumerate(names):
             sp = match_name(name, site_players[side]) or {}
             m = float(np.clip((sp.get("playMin") or 77) / 90.0, 0.6, 1.0))
-            pl.append(dict(name=name, pos=sp.get("pos", "M"), m=m, g90=sp.get("g90"), espn_pos=epos,
+            # neznámy hráč v predpokladanej zostave: post podľa poradia v rozostavení (brankár, obrana, záloha, útok)
+            fallback = "G" if idx == 0 else "D" if idx <= 4 else "M" if idx <= 8 else "F"
+            pl.append(dict(name=name, pos=sp.get("pos", fallback), m=m, g90=sp.get("g90"), espn_pos=epos,
                            odds=match_name(name, team_odds)))
         th_nat = pr.scorer_shares(team, pl)
         for p, epos in zip(pl, [e for _, e in names]):
