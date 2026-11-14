@@ -63,6 +63,8 @@ class Predictor:
         scfg["imp"] = tuple(scfg["imp"])
         cal = json.loads((RES / "calibration.json").read_text())
         self.cal = (np.array(cal["beta"]), np.array(cal["theta"]))
+        self.cal_world = (np.array(cal["world"]["beta"]), np.array(cal["world"]["theta"])) if "world" in cal else self.cal
+        self.uefa = set(cal.get("uefa_teams", []))
         self.rho = self.cfg["rho"]
         self.D = int(w.day.max()) + 1 if as_of is None else (pd.Timestamp(as_of) - pd.Timestamp("1970-01-01")).days
         self.fit = W.fit_strength_at(w, self.D, scfg)
@@ -104,6 +106,7 @@ class Predictor:
             self.sc = S.ScorerModel(**sp)
             lu = S.load_lineups()
             m = pd.read_csv(E.PROC / "matches.csv.gz", dtype={"id": str}).set_index("id")
+            self._lu, self._m = lu, m
             for eid, g in sorted(lu.groupby("id"), key=lambda kv: lam[kv[0]][2] if kv[0] in lam else "9"):
                 if eid not in lam:
                     continue
@@ -129,9 +132,12 @@ class Predictor:
     def goals(self, home: str, away: str, neutral: bool = False) -> dict:
         ls_h, ls_a, le_h, le_a = self.raw(home, away, neutral)
         hf = 0.0 if neutral else 1.0
-        ch, ca, M, P = C.predict_calibrated(self.cal, ls_h, ls_a, le_h, le_a, hf, self.rho)
+        # kalibrácia podľa populácie: dva európske tímy -> „uefa“, inak „world“
+        european = (home in self.uefa and away in self.uefa) if self.uefa else True
+        ch, ca, M, P = C.predict_calibrated(self.cal if european else self.cal_world, ls_h, ls_a, le_h, le_a, hf, self.rho)
         h, a = self.tid[home], self.tid[away]
         return dict(lh=float(ch[0]), la=float(ca[0]), M=M[0], P=P[0], raw=dict(sila=(ls_h, ls_a), elo=(le_h, le_a)),
+                    calibration="uefa" if european else "world",
                     elo=(float(self.R[h]), float(self.R[a])), n_eff=(float(self.fit["n_eff"][h]), float(self.fit["n_eff"][a])),
                     att=(float(self.fit["att"][h]), float(self.fit["att"][a])), dfn=(float(self.fit["dfn"][h]), float(self.fit["dfn"][a])))
 
@@ -174,6 +180,43 @@ class Predictor:
                     mode=int(np.argmax(pmf)), q10=int(np.searchsorted(np.cumsum(pmf), 0.1)), q90=int(np.searchsorted(np.cumsum(pmf), 0.9)))
 
     # ------------------------------------------------------------------ strelci
+    def expected_xi(self, team: str, n_matches: int = 6) -> dict | None:
+        """Odhad základnej jedenástky, kým nie je potvrdená: najčastejší štartujúci z posledných zápasov tímu."""
+        m = self._m
+        ids = m[((m.home == team) | (m.away == team)) & m.done].sort_values("date").index[::-1]
+        rows, used = [], 0
+        for eid in ids:
+            side = "h" if m.at[eid, "home"] == team else "a"
+            t = self._lu[(self._lu.id == eid) & (self._lu.side == side) & self._lu.starter]
+            if len(t) != 11:
+                continue
+            t = t.assign(w=0.8 ** used, date=m.at[eid, "date"])
+            rows.append(t)
+            used += 1
+            if used >= n_matches:
+                break
+        if not rows:
+            return None
+        allr = pd.concat(rows)
+        agg = allr.groupby("pid").agg(w=("w", "sum"), name=("player", "first"), pos=("pos", lambda x: x.value_counts().index[0])).sort_values("w", ascending=False)
+        agg["grp"] = agg.pos.map(S.pos_group)
+        # rozostavenie po postoch: 1 brankár, 4 obrancovia, 3 stredopoliari, 3 ofenzívni (z toho aspoň 1 hrotový útočník)
+        take = []
+        def pick(groups, k, exclude=()):
+            c = agg[agg.grp.isin(groups) & ~agg.index.isin(list(exclude) + take)].head(k)
+            take.extend(c.index.tolist())
+        pick(["G"], 1)
+        pick(["CD"], 2)
+        pick(["FB"], 2)
+        pick(["DM", "CM"], 2)
+        pick(["F", "CF"], 1)
+        pick(["AM", "AW", "WF", "WM", "F", "CF"], 3)
+        if len(take) < 11:
+            pick(list(S.GROUPS), 11 - len(take))
+        xi = agg.loc[take]
+        return dict(starters=[dict(name=r.name, espn_pos=r.pos) for r in xi.itertuples(index=False)], bench=[], formation=None,
+                    based_on=used, last=str(allr.date.max())[:10])
+
     def scorer_shares(self, team: str, players: list[dict]) -> np.ndarray:
         """players: [{'name', 'pos' (G/D/M/F), 'm'}] -> podiel θ z reprezentačnej histórie (nenormovaný)."""
         default = {"G": "G", "D": "CD", "M": "CM", "F": "F"}
@@ -225,6 +268,35 @@ def espn_lineups(eid: str, comp: str):
     return dict(lineups=out if len(out) == 2 else None, referee=officials[0].get("displayName") if officials else None)
 
 
+def espn_fixture(eid: str, comp: str) -> dict:
+    """Zápas mimo webu: postaví rovnaký vstup ako snapshot webu priamo z ESPN (tímy, miesto, kurzy DraftKings)."""
+    import requests
+    from build_dataset import american, canon
+    d = requests.get(f"{ESPN}/{comp}/summary?event={eid}", timeout=60).json()
+    c = d["header"]["competitions"][0]
+    sides = {x["homeAway"]: x for x in c["competitors"]}
+    venue = (d.get("gameInfo") or {}).get("venue") or {}
+    country = (venue.get("address") or {}).get("country")
+    home = sides["home"]["team"]["displayName"]
+    neutral = bool(country) and canon(country) != canon(home)
+    odds = {}
+    o = (d.get("pickcenter") or d.get("odds") or [None])[0]
+    if o:
+        x12 = {"1": american((o.get("homeTeamOdds") or {}).get("moneyLine")), "X": american((o.get("drawOdds") or {}).get("moneyLine")),
+               "2": american((o.get("awayTeamOdds") or {}).get("moneyLine"))}
+        if all(v == v for v in x12.values()):
+            odds["1x2"] = {(o.get("provider") or {}).get("name", "book"): x12}
+        ov, un = american(o.get("overOdds")), american(o.get("underOdds"))
+        if o.get("overUnder") and ov == ov and un == un:
+            odds[f"ou:{o['overUnder']}"] = {(o.get("provider") or {}).get("name", "book"): {"over": ov, "under": un}}
+    off = (d.get("gameInfo") or {}).get("officials") or []
+    return dict(fixture=dict(id=eid, date=c["date"], neutral=neutral, venueName=venue.get("fullName"), comp=comp,
+                             compName=(d["header"].get("season") or {}).get("name"), city=(venue.get("address") or {}).get("city")),
+                home=dict(id=sides["home"]["team"]["id"], name=home), away=dict(id=sides["away"]["team"]["id"], name=sides["away"]["team"]["displayName"]),
+                odds=odds, players={}, lineup={}, lambdas=dict(model=None, market=None), factors=[],
+                referee=dict(known=dict(name=off[0].get("displayName")) if off else None), absences=None)
+
+
 def best_x12(odds: dict):
     """Priemer férových pravdepodobností cez dostupné kancelárie + zoznam kurzov."""
     books = odds.get("1x2", {})
@@ -232,7 +304,8 @@ def best_x12(odds: dict):
     return (np.mean(ps, axis=0) if ps else None), books
 
 
-def predict_match(pr: Predictor, a: dict, lineups: dict | None = None, referee: str | None = None, use_market: bool = True) -> dict:
+def predict_match(pr: Predictor, a: dict, lineups: dict | None = None, referee: str | None = None, use_market: bool = True,
+                  confirmed: bool | None = None) -> dict:
     from build_dataset import canon
     fx = a["fixture"]
     home, away = canon(a["home"]["name"]), canon(a["away"]["name"])
@@ -244,7 +317,7 @@ def predict_match(pr: Predictor, a: dict, lineups: dict | None = None, referee: 
     pm, books = best_x12(a.get("odds") or {})
     if pm is not None:
         ou, line = None, 2.5
-        for ln in ("2.5", "3.5", "1.5"):
+        for ln in ("2.5", "3.5", "1.5", "3", "2", "4.5"):
             b = (a["odds"].get(f"ou:{ln}") or {})
             b = b.get("Fortuna") or next(iter(b.values()), None)
             if b and "over" in b and "under" in b:
@@ -283,9 +356,9 @@ def predict_match(pr: Predictor, a: dict, lineups: dict | None = None, referee: 
     site_players = {side: {norm_name(p["name"]): p for p in (a.get("players") or {}).get(side, [])} for side in ("h", "a")}
     team_id = {"h": a["home"]["id"], "a": a["away"]["id"]}
     scor = {}
-    confirmed = lineups is not None
+    confirmed = (lineups is not None) if confirmed is None else confirmed
     for side, team, lam_t in (("h", home, lh), ("a", away, la)):
-        if confirmed:
+        if lineups is not None:
             names = [(p["name"], p.get("espn_pos")) for p in lineups[side]["starters"]]
         else:
             names = [(n, None) for n in (a.get("lineup") or {}).get(side, [])]
@@ -305,7 +378,7 @@ def predict_match(pr: Predictor, a: dict, lineups: dict | None = None, referee: 
             g = S.pos_group(epos)
             if g:                                   # potvrdená zostava: presný post z rozostavenia
                 p["_grp"] = g
-        if confirmed:
+        if lineups is not None:
             th_nat = np.array([pr.sc.theta(p["_pid"] if p["_pid"] else "?" + p["name"], p["_grp"]) for p in pl])
         m = np.array([p["m"] for p in pl])
         share = pr.sc.starters_share() * (m.sum() / (11 * 0.86))
@@ -340,18 +413,30 @@ def predict_match(pr: Predictor, a: dict, lineups: dict | None = None, referee: 
     out["scorers"] = scor
     out["lineup_confirmed"] = confirmed
     out["absences"] = a.get("absences")
-    out["site"] = dict(lam_model=a["lambdas"]["model"], lam_market=a["lambdas"].get("market"),
-                       factors=[{k: f.get(k) for k in ("key", "desc", "lh", "la", "p1", "px", "p2")} for f in a.get("factors", [])])
+    out["calibration"] = model.get("calibration")
+    out["neutral"] = neutral
+    if (a.get("lambdas") or {}).get("model"):
+        out["site"] = dict(lam_model=a["lambdas"]["model"], lam_market=a["lambdas"].get("market"),
+                           factors=[{k: f.get(k) for k in ("key", "desc", "lh", "la", "p1", "px", "p2")} for f in a.get("factors", [])])
     return out
 
 
 if __name__ == "__main__":
     eid = sys.argv[1]
     snap = json.loads((E.PROC / "site_snapshot.json").read_text())
-    a = snap[eid]
+    comp_arg = next((x.split("=", 1)[1] for x in sys.argv if x.startswith("--comp=")), None)
+    a = snap[eid] if eid in snap else espn_fixture(eid, comp_arg or "uefa.nations")
     pr = Predictor()
     live = espn_lineups(eid, a["fixture"].get("comp", "uefa.nations")) if "--no-lineups" not in sys.argv else None
-    res = predict_match(pr, a, lineups=(live or {}).get("lineups"), referee=(live or {}).get("referee"), use_market="--no-market" not in sys.argv)
+    lus, conf = (live or {}).get("lineups"), None
+    if lus is None and not (a.get("lineup") or {}).get("h"):
+        # web tento zápas nepokrýva a zostavy ešte nie sú: odhad jedenástky z posledných zápasov
+        from build_dataset import canon
+        exp = {sd: pr.expected_xi(canon(a[k]["name"])) for sd, k in (("h", "home"), ("a", "away"))}
+        if all(exp.values()):
+            lus, conf = exp, False
+    res = predict_match(pr, a, lineups=lus, referee=(live or {}).get("referee"), use_market="--no-market" not in sys.argv, confirmed=conf)
+    res["generated_utc"] = pd.Timestamp.utcnow().strftime("%Y-%m-%d %H:%M")
     (RES / f"prediction_{eid}.json").write_text(json.dumps(res, indent=1, ensure_ascii=False, default=float))
     f = res["final"]
     print(f"{res['home']} – {res['away']} | λ {f['lam'][0]:.2f}:{f['lam'][1]:.2f} | 1/X/2 {f['p1']:.3f}/{f['px']:.3f}/{f['p2']:.3f} | zostavy potvrdené: {res['lineup_confirmed']}")

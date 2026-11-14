@@ -1,4 +1,47 @@
 {
+ "rho": -0.06,
+ "features": [
+  "1",
+  "log λ_sila",
+  "log λ_sila súper",
+  "log λ_elo",
+  "log λ_elo súper",
+  "doma"
+ ],
+ "uefa": {
+  "beta": [
+   -0.07032383256335467,
+   0.9354626569081609,
+   -0.16896168356707528,
+   0.37484504853192224,
+   0.3461687729994747,
+   -0.04764291026651581
+  ],
+  "theta": [
+   -0.0610663732451022,
+   1.112533138047755,
+   -0.05789007212329125,
+   1.2426652001704388
+  ],
+  "n": 3651
+ },
+ "world": {
+  "beta": [
+   -0.14322265664012138,
+   0.8257711383131371,
+   -0.13431177257814508,
+   0.5461950599589935,
+   0.3908091058197865,
+   0.033119189222571704
+  ],
+  "theta": [
+   0.06152137649923918,
+   0.9922031029842121,
+   -0.07568780319537041,
+   1.1093326890926212
+  ],
+  "n": 10023
+ },
  "beta": [
   -0.07032383256335467,
   0.9354626569081609,
@@ -13,14 +56,65 @@
   -0.05789007212329125,
   1.2426652001704388
  ],
- "rho": -0.06,
  "n": 3651,
- "features": [
-  "1",
-  "log \u03bb_sila",
-  "log \u03bb_sila s\u00faper",
-  "log \u03bb_elo",
-  "log \u03bb_elo s\u00faper",
-  "doma"
+ "uefa_teams": [
+  "Albania",
+  "Andorra",
+  "Armenia",
+  "Austria",
+  "Azerbaijan",
+  "Belarus",
+  "Belgium",
+  "Bosnia and Herzegovina",
+  "Bulgaria",
+  "Croatia",
+  "Cyprus",
+  "Czech Republic",
+  "Czechoslovakia",
+  "Denmark",
+  "England",
+  "Estonia",
+  "Faroe Islands",
+  "Finland",
+  "France",
+  "Georgia",
+  "German DR",
+  "Germany",
+  "Gibraltar",
+  "Greece",
+  "Hungary",
+  "Iceland",
+  "Israel",
+  "Italy",
+  "Kazakhstan",
+  "Kosovo",
+  "Latvia",
+  "Liechtenstein",
+  "Lithuania",
+  "Luxembourg",
+  "Malta",
+  "Moldova",
+  "Montenegro",
+  "Netherlands",
+  "North Macedonia",
+  "Northern Ireland",
+  "Norway",
+  "Poland",
+  "Portugal",
+  "Republic of Ireland",
+  "Romania",
+  "Russia",
+  "San Marino",
+  "Scotland",
+  "Serbia",
+  "Slovakia",
+  "Slovenia",
+  "Spain",
+  "Sweden",
+  "Switzerland",
+  "Turkey",
+  "Ukraine",
+  "Wales",
+  "Yugoslavia"
  ]
 }

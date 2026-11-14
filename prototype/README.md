@@ -162,6 +162,9 @@ zápasov) slúži len na záverečné porovnanie. Metrika: log-loss 1/X/2 (niž�
 | 14 | strelci: góly z udalostí zápasu namiesto hráčskych štatistík | pri predpovedi 24 % sa trafilo 32 % → po oprave 26 % | **oprava chyby v dátach** |
 | 15 | strelci: jemnejšie posty + empirický Bayes | 0,2542 → 0,2497 | prijaté |
 | 16 | váha trhu 0,5 / 0,7 / 0,85 | 0,85–1,0 najlepšie | potvrdené 0,85 |
+| 17 | karty: predpovedaná „faulovosť“ tímov ako ďalší príznak | súčet NLL 2,0945 → 2,0905, ale test 2,1300 → 2,1322 | zamietnuté (nekonzistentné) |
+| 18 | góly: zloženie základnej jedenástky (koľko streleckej sily a stálych hráčov nastúpi) | koeficienty nevýznamné (z < 1,8), test NLL horší | zamietnuté – úpravu „marodka“ sa na reprezentačných dátach nepodarilo potvrdiť |
+| 19 | kalibrácia podľa populácie: dva európske tímy „uefa“, inak „world“ | mimo Európy sklony ≈ 1,0 a 1,1 (favorit tam podhodnotený nie je) | prijaté |
 
 ---
 
@@ -241,6 +244,9 @@ zápasov (model hovorí 26 %). Reprezentačná história sama veľa nepridá –
 Limity: reprezentácie hrajú ~10 zápasov ročne, takže neistota sily je veľká; model nevie o zostavách ani
 zraneniach (to nesie trh); klubový futbal tu testovaný nebol.
 
+Mimo Európy (všetky súťažné zápasy sveta od 2018-08, n = 5 231, bez kalibrácie): Elo 0,8367, model sily 0,8281,
+mix 0,8253 (konštanta 1,0512) – jadro modelu teda funguje aj mimo zóny UEFA.
+
 ---
 
 ## 6. Spustenie
@@ -258,7 +264,11 @@ python3 site_snapshot.py           # čo práve predpovedá web (λ, kurzy, zost
 python3 compare_site.py            # prototyp vs web vs trh
 python3 predict.py 401861167 && python3 report.py 401861167     # predpoveď zápasu
 python3 today.py 2026-11-14        # všetky zápasy dňa (+ `check` po zápasoch)
+python3 predict.py 401929710 --comp=concacaf.nations.league    # zápas, ktorý web nepokrýva (vstupy priamo z ESPN)
 ```
+
+`data/processed/` obsahuje aj hotové walk-forward λ (`wide_walk.npz`, `espn_walk.npz`) a snapshot webu, takže
+`predict.py` beží z čistého klonu bez prepočítavania celej histórie.
 
 | súbor | obsah |
 |---|---|

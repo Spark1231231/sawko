@@ -12,7 +12,7 @@ import engine as E
 SK = {"Portugal": "Portugalsko", "Denmark": "Dánsko", "Norway": "Nórsko", "Wales": "Wales", "Austria": "Rakúsko",
       "Republic of Ireland": "Írsko", "Sweden": "Švédsko", "Bosnia and Herzegovina": "Bosna a Hercegovina", "Romania": "Rumunsko",
       "Poland": "Poľsko", "Northern Ireland": "Severné Írsko", "Ukraine": "Ukrajina", "Georgia": "Gruzínsko", "Hungary": "Maďarsko",
-      "Kosovo": "Kosovo", "Israel": "Izrael"}
+      "Kosovo": "Kosovo", "Israel": "Izrael", "United States": "USA", "Haiti": "Haiti", "Mexico": "Mexiko", "Jamaica": "Jamajka"}
 
 
 def pct(x, d=0):

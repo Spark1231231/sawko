@@ -600,21 +600,32 @@
    ]
   },
   "actual": {
-   "state": "pre",
-   "detail": "11/14 - 12:00 PM EST",
+   "state": "post",
+   "detail": "FT",
    "hg": 0,
-   "ag": 0,
-   "hsh": null,
-   "hsot": null,
-   "hy": null,
-   "hr": null,
-   "hcor": null,
-   "ash": null,
-   "asot": null,
-   "ay": null,
-   "ar": null,
-   "acor": null,
-   "scorers": []
+   "ag": 2,
+   "hsh": 7.0,
+   "hsot": 1.0,
+   "hy": 1.0,
+   "hr": 0.0,
+   "hcor": 8.0,
+   "ash": 12.0,
+   "asot": 6.0,
+   "ay": 2.0,
+   "ar": 0.0,
+   "acor": 6.0,
+   "scorers": [
+    [
+     "Hungary",
+     "Lasha Dvali",
+     "73'"
+    ],
+    [
+     "Hungary",
+     "Barnabás Varga",
+     "85'"
+    ]
+   ]
   }
  },
  {
@@ -909,21 +920,42 @@
    ]
   },
   "actual": {
-   "state": "pre",
-   "detail": "11/14 - 12:00 PM EST",
-   "hg": 0,
-   "ag": 0,
-   "hsh": null,
-   "hsot": null,
-   "hy": null,
-   "hr": null,
-   "hcor": null,
-   "ash": null,
-   "asot": null,
-   "ay": null,
-   "ar": null,
-   "acor": null,
-   "scorers": []
+   "state": "post",
+   "detail": "FT",
+   "hg": 3,
+   "ag": 1,
+   "hsh": 15.0,
+   "hsot": 6.0,
+   "hy": 0.0,
+   "hr": 0.0,
+   "hcor": 8.0,
+   "ash": 12.0,
+   "asot": 5.0,
+   "ay": 3.0,
+   "ar": 0.0,
+   "acor": 2.0,
+   "scorers": [
+    [
+     "Norway",
+     "Antonio Nusa",
+     "59'"
+    ],
+    [
+     "Norway",
+     "Andreas Schjelderup",
+     "68'"
+    ],
+    [
+     "Wales",
+     "David Brooks",
+     "79'"
+    ],
+    [
+     "Norway",
+     "Erling Haaland",
+     "88'"
+    ]
+   ]
   }
  },
  {
@@ -1218,20 +1250,20 @@
    ]
   },
   "actual": {
-   "state": "pre",
-   "detail": "11/14 - 2:45 PM EST",
+   "state": "in",
+   "detail": "36'",
    "hg": 0,
    "ag": 0,
-   "hsh": null,
-   "hsot": null,
-   "hy": null,
-   "hr": null,
-   "hcor": null,
-   "ash": null,
-   "asot": null,
-   "ay": null,
-   "ar": null,
-   "acor": null,
+   "hsh": 5.0,
+   "hsot": 3.0,
+   "hy": 1.0,
+   "hr": 0.0,
+   "hcor": 2.0,
+   "ash": 3.0,
+   "asot": 3.0,
+   "ay": 0.0,
+   "ar": 0.0,
+   "acor": 1.0,
    "scorers": []
   }
  },
@@ -1527,20 +1559,20 @@
    ]
   },
   "actual": {
-   "state": "pre",
-   "detail": "11/14 - 2:45 PM EST",
+   "state": "in",
+   "detail": "35'",
    "hg": 0,
    "ag": 0,
-   "hsh": null,
-   "hsot": null,
-   "hy": null,
-   "hr": null,
-   "hcor": null,
-   "ash": null,
-   "asot": null,
-   "ay": null,
-   "ar": null,
-   "acor": null,
+   "hsh": 3.0,
+   "hsot": 2.0,
+   "hy": 0.0,
+   "hr": 0.0,
+   "hcor": 1.0,
+   "ash": 2.0,
+   "asot": 1.0,
+   "ay": 0.0,
+   "ar": 0.0,
+   "acor": 0.0,
    "scorers": []
   }
  },
@@ -1836,20 +1868,20 @@
    ]
   },
   "actual": {
-   "state": "pre",
-   "detail": "11/14 - 2:45 PM EST",
+   "state": "in",
+   "detail": "36'",
    "hg": 0,
    "ag": 0,
-   "hsh": null,
-   "hsot": null,
-   "hy": null,
-   "hr": null,
-   "hcor": null,
-   "ash": null,
-   "asot": null,
-   "ay": null,
-   "ar": null,
-   "acor": null,
+   "hsh": 5.0,
+   "hsot": 3.0,
+   "hy": 0.0,
+   "hr": 0.0,
+   "hcor": 2.0,
+   "ash": 5.0,
+   "asot": 1.0,
+   "ay": 0.0,
+   "ar": 0.0,
+   "acor": 3.0,
    "scorers": []
   }
  },
@@ -2145,20 +2177,20 @@
    ]
   },
   "actual": {
-   "state": "pre",
-   "detail": "11/14 - 2:45 PM EST",
+   "state": "in",
+   "detail": "35'",
    "hg": 0,
    "ag": 0,
-   "hsh": null,
-   "hsot": null,
-   "hy": null,
-   "hr": null,
-   "hcor": null,
-   "ash": null,
-   "asot": null,
-   "ay": null,
-   "ar": null,
-   "acor": null,
+   "hsh": 4.0,
+   "hsot": 0.0,
+   "hy": 1.0,
+   "hr": 0.0,
+   "hcor": 1.0,
+   "ash": 4.0,
+   "asot": 0.0,
+   "ay": 0.0,
+   "ar": 0.0,
+   "acor": 3.0,
    "scorers": []
   }
  },
@@ -2454,21 +2486,32 @@
    ]
   },
   "actual": {
-   "state": "pre",
-   "detail": "11/14 - 2:45 PM EST",
-   "hg": 0,
+   "state": "in",
+   "detail": "37'",
+   "hg": 2,
    "ag": 0,
-   "hsh": null,
-   "hsot": null,
-   "hy": null,
-   "hr": null,
-   "hcor": null,
-   "ash": null,
-   "asot": null,
-   "ay": null,
-   "ar": null,
-   "acor": null,
-   "scorers": []
+   "hsh": 8.0,
+   "hsot": 4.0,
+   "hy": 0.0,
+   "hr": 0.0,
+   "hcor": 1.0,
+   "ash": 4.0,
+   "asot": 1.0,
+   "ay": 0.0,
+   "ar": 0.0,
+   "acor": 1.0,
+   "scorers": [
+    [
+     "Sweden",
+     "Daniel Svensson",
+     "5'"
+    ],
+    [
+     "Sweden",
+     "Viktor Gyökeres",
+     "11'"
+    ]
+   ]
   }
  }
 ]
