@@ -308,8 +308,8 @@ def devig(oh, od, oa):
     return p / p.sum(-1, keepdims=True)
 
 
-def lambdas_from_probs(p1, p2, p_over=None, rho: float = 0.0, total_hint: float = 2.7):
-    """Spätne nájde (λ_dom, λ_host), ktoré dajú P(1), P(2) a (ak je) P(over 2.5). Newton na 2 rovniciach."""
+def lambdas_from_probs(p1, p2, p_over=None, rho: float = 0.0, total_hint: float = 2.7, line: float = 2.5):
+    """Spätne nájde (λ_dom, λ_host), ktoré dajú P(1), P(2) a (ak je) P(over `line`). Newton na 2 rovniciach."""
     s = np.log(max(p1, 1e-6) / max(p2, 1e-6)) * 0.6
     t = np.log(total_hint / 2) * 2
     for _ in range(60):
@@ -321,7 +321,7 @@ def lambdas_from_probs(p1, p2, p_over=None, rho: float = 0.0, total_hint: float 
             if p_over is None:
                 r2 = (lh + la) - total_hint
             else:
-                po = float((M * (TOT > 2.5)).sum())
+                po = float((M * (TOT > line)).sum())
                 r2 = np.log(po / (1 - po)) - np.log(p_over / (1 - p_over))
             return np.array([r1, r2])
         r = f(s, t)

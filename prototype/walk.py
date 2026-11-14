@@ -92,3 +92,29 @@ def walk_elo(w: pd.DataFrame, rows: np.ndarray, elo_cfg: dict | None = None, tra
 def blend(l1, l2, wgt: float):
     """Geometrický mix dvoch odhadov λ (wgt = váha druhého)."""
     return np.exp((1 - wgt) * np.log(l1) + wgt * np.log(l2))
+
+
+def fit_strength_at(w: pd.DataFrame, D: int, cfg: dict | None = None):
+    """Jeden fit modelu sily zo všetkých zápasov pred dňom D (rovnaké váhy ako vo walk-forwarde)."""
+    cfg = {**DEFAULT, **(cfg or {})}
+    n_t = len(w.attrs["teams"])
+    day = w.day.values
+    cap = cfg["cap"]
+    yh, ya = np.minimum(w.hg.values, cap), np.minimum(w.ag.values, cap)
+    g = cfg["sot_mix"]
+    if g < 1 and "hsot" in w:
+        has = np.isfinite(w.hsot.values) & np.isfinite(w.asot.values)
+        conv = (w.hg.values[has].sum() + w.ag.values[has].sum()) / max(w.hsot.values[has].sum() + w.asot.values[has].sum(), 1)
+        yh = np.where(has, g * yh + (1 - g) * conv * np.nan_to_num(w.hsot.values), yh)
+        ya = np.where(has, g * ya + (1 - g) * conv * np.nan_to_num(w.asot.values), ya)
+    hf = (~w.neutral.values).astype(float)
+    imp = np.asarray(cfg["imp"])[w.cls.values]
+    lo = np.searchsorted(day, D - int(cfg["window"] * 365.25), "left")
+    hi = np.searchsorted(day, D, "left")
+    sl = slice(lo, hi)
+    ok = np.isfinite(yh[sl]) & np.isfinite(ya[sl])
+    wt = imp[sl] * 0.5 ** ((D - day[sl]) / cfg["halflife"]) * ok
+    att, dfn, mu, gam = E.fit_strength(w.h.values[sl], w.a.values[sl], np.nan_to_num(yh[sl]), np.nan_to_num(ya[sl]), wt, hf[sl], n_t,
+                                       cfg["sigma_s"], cfg["sigma_t"], sweeps=200)
+    n_eff = np.bincount(w.h.values[sl], wt, n_t) + np.bincount(w.a.values[sl], wt, n_t)
+    return dict(att=att, dfn=dfn, mu=mu, gam=gam, n_eff=n_eff)

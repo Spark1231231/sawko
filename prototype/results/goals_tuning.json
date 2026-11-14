@@ -1,0 +1,114 @@
+{
+ "strength_cfg": {
+  "halflife": 650,
+  "sigma_s": 1.5,
+  "sigma_t": 0.3,
+  "sot_mix": 0.5,
+  "imp": [
+   0.4,
+   0.8,
+   1.0,
+   1.0
+  ]
+ },
+ "elo_cfg": {
+  "k_scale": 0.85,
+  "hfa": 50
+ },
+ "elo_weight": 0.2,
+ "rho": -0.06,
+ "stretch_diag": [
+  [
+   0.9,
+   0.8265,
+   0.8279
+  ],
+  [
+   0.95,
+   0.8229,
+   0.8223
+  ],
+  [
+   1.0,
+   0.8203,
+   0.8175
+  ],
+  [
+   1.05,
+   0.8186,
+   0.8135
+  ],
+  [
+   1.1,
+   0.8178,
+   0.8102
+  ],
+  [
+   1.2,
+   0.8187,
+   0.8058
+  ],
+  [
+   1.46,
+   0.836,
+   0.8069
+  ]
+ ],
+ "compare": {
+  "elo": {
+   "ladenie": {
+    "logloss": 0.8333,
+    "rps": 0.1634,
+    "brier": 0.4879,
+    "acc": 0.6284,
+    "score_nll": 2.7831,
+    "ou25": 0.6754
+   },
+   "test": {
+    "logloss": 0.8257,
+    "rps": 0.158,
+    "brier": 0.4843,
+    "acc": 0.6246,
+    "score_nll": 2.8634,
+    "ou25": 0.679
+   }
+  },
+  "sila": {
+   "ladenie": {
+    "logloss": 0.8211,
+    "rps": 0.16,
+    "brier": 0.4798,
+    "acc": 0.6367,
+    "score_nll": 2.7472,
+    "ou25": 0.6649
+   },
+   "test": {
+    "logloss": 0.8194,
+    "rps": 0.1548,
+    "brier": 0.4776,
+    "acc": 0.635,
+    "score_nll": 2.8273,
+    "ou25": 0.6659
+   }
+  },
+  "prototyp": {
+   "ladenie": {
+    "logloss": 0.8203,
+    "rps": 0.16,
+    "brier": 0.4797,
+    "acc": 0.6337,
+    "score_nll": 2.7441,
+    "ou25": 0.6631
+   },
+   "test": {
+    "logloss": 0.8175,
+    "rps": 0.1546,
+    "brier": 0.4769,
+    "acc": 0.635,
+    "score_nll": 2.8243,
+    "ou25": 0.6649
+   }
+  }
+ },
+ "selection_note": "halflife/sot_mix vybran\u00e9 na obdob\u00ed ladenia pri k=1.15 (t8 grid); Elo vstupuje cez stacking"
+}
