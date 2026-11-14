@@ -13,7 +13,7 @@ import walk as W
 if __name__ == "__main__":
     w = E.load_world()
     cfg = json.loads((E.ROOT / "results" / "goals_tuning.json").read_text())
-    z = np.load(E.ROOT / "data" / "raw" / "cache" / "wide.npz")
+    z = np.load(E.PROC / "wide_walk.npz")
     rows = z["rows"]
     lh, la = W.blend(z["lh"], z["eh"], cfg["elo_weight"]), W.blend(z["la"], z["ea"], cfg["elo_weight"])
     h, a, day = w.h.values[rows], w.a.values[rows], w.day.values[rows]

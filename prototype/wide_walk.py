@@ -24,5 +24,5 @@ if __name__ == "__main__":
     tag = "" if len(sys.argv) <= 1 else "_hl" + sys.argv[1]
     tmp = str(E.ROOT / "data" / "raw" / "cache" / ("tmp_%s.npz" % os.getpid()))
     np.savez(tmp, rows=rows, lh=lh, la=la, eh=eh, ea=ea)
-    os.replace(tmp, E.ROOT / "data" / "raw" / "cache" / f"wide{tag}.npz")
+    os.replace(tmp, E.PROC / "wide_walk.npz" if not tag else E.ROOT / "data" / "raw" / "cache" / f"wide{tag}.npz")
     print("wide walk", len(rows), "zápasov", round(time.time() - t), "s")

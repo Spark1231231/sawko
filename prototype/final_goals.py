@@ -47,7 +47,7 @@ if __name__ == "__main__":
     w = E.load_world()
     cfg = json.loads((E.ROOT / "results" / "goals_tuning.json").read_text())
     rho = cfg["rho"]
-    z = np.load(E.ROOT / "data" / "raw" / "cache" / "wide.npz")
+    z = np.load(E.PROC / "wide_walk.npz")
     rows = z["rows"]
     ls_h, ls_a, le_h, le_a = z["lh"], z["la"], z["eh"], z["ea"]
     hg, ag = w.hg.values[rows], w.ag.values[rows]

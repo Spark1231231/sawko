@@ -13,7 +13,7 @@ import walk as W
 
 w = E.load_world()
 _cfg = json.loads((E.ROOT / "results" / "goals_tuning.json").read_text())
-_z = np.load(E.ROOT / "data" / "raw" / "cache" / "espn_walk.npz")
+_z = np.load(E.PROC / "espn_walk.npz")
 _rows = _z["rows"]
 _lh, _la = W.blend(_z["lh"], _z["eh"], _cfg["elo_weight"]), W.blend(_z["la"], _z["ea"], _cfg["elo_weight"])
 LAM = {eid: (lh, la, d, c) for eid, lh, la, d, c in zip(w.espn_id.values[_rows], _lh, _la, w.date.values[_rows], w.comp.values[_rows])}

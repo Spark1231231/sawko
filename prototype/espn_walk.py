@@ -20,5 +20,5 @@ if __name__ == "__main__":
     eh, ea = W.walk_elo(w, rows, pre=pre)
     tmp = str(E.ROOT / "data" / "raw" / "cache" / ("tmp_%s.npz" % os.getpid()))
     np.savez(tmp, rows=rows, lh=lh, la=la, eh=eh, ea=ea)
-    os.replace(tmp, E.ROOT / "data" / "raw" / "cache" / "espn_walk.npz")
+    os.replace(tmp, E.PROC / "espn_walk.npz")
     print("espn walk", len(rows), "zápasov", round(time.time() - t), "s")

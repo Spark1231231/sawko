@@ -65,20 +65,24 @@ def _X(s_own, home, away, friendly, major):
     return np.column_stack([np.ones_like(s_own), home, away, s_own, s_own ** 2, friendly, major])
 
 
-def features(d: pd.DataFrame):
+def features(d: pd.DataFrame, extra=None):
+    """extra = (Eh, Ea): voliteľné ďalšie stĺpce príznakov pre domácich / hostí (napr. predpovedané fauly)."""
     z = np.zeros(len(d))
     Xh = _X(d.s.values, d.hf.values, z, d.friendly.values, d.major.values)
     Xa = _X(-d.s.values, z, d.hf.values, d.friendly.values, d.major.values)
+    if extra is not None:
+        Xh, Xa = np.column_stack([Xh, extra[0]]), np.column_stack([Xa, extra[1]])
     return Xh, Xa
 
 
-def walk_counts(d: pd.DataFrame, kind: str, cfg: dict | None = None, start: str = "2019-01-01", use_features: bool = True):
+def walk_counts(d: pd.DataFrame, kind: str, cfg: dict | None = None, start: str = "2019-01-01", use_features: bool = True,
+                extra=None):
     """Vracia stredné hodnoty (dom, hos), disperziu r a základný priemer pre zápasy od `start`."""
     cfg = {**DEFAULT, **(cfg or {})}
     ch, ca, okc = KINDS[kind]
     ok = d[okc].fillna(False).astype(bool).values & d[ch].notna().values & d[ca].notna().values
     yh, ya = d[ch].fillna(0).values.astype(float), d[ca].fillna(0).values.astype(float)
-    Xh, Xa = features(d)
+    Xh, Xa = features(d, extra)
     day, year = d.day.values, d.year.values
     n_t = int(max(d.h.max(), d.a.max())) + 1
     h, a = d.h.values, d.a.values

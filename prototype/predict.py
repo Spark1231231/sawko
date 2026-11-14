@@ -75,7 +75,7 @@ class Predictor:
         self.counts = {}
         self.sc = None
         if with_counts or with_scorers:
-            z = np.load(E.ROOT / "data" / "raw" / "cache" / "espn_walk.npz")
+            z = np.load(E.PROC / "espn_walk.npz")
             bw = self.cfg["elo_weight"]
             self._lam_rows = z["rows"]
             self._lh, self._la = W.blend(z["lh"], z["eh"], bw), W.blend(z["la"], z["ea"], bw)

@@ -24,7 +24,7 @@ LINES = {"shots": (22.5, 24.5, 26.5), "sot": (7.5, 8.5, 9.5), "corners": (8.5, 9
 
 w = E.load_world()
 _cfg = json.loads((E.ROOT / "results" / "goals_tuning.json").read_text())
-_z = np.load(E.ROOT / "data" / "raw" / "cache" / "espn_walk.npz")
+_z = np.load(E.PROC / "espn_walk.npz")
 D = K.frame(w, _z["rows"], W.blend(_z["lh"], _z["eh"], _cfg["elo_weight"]), W.blend(_z["la"], _z["ea"], _cfg["elo_weight"]))
 EV = D.comp.isin(E.EVAL_COMPS).values
 TUNE = EV & (D.date.values < "2024-01-01")
