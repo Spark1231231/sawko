@@ -1251,19 +1251,19 @@
   },
   "actual": {
    "state": "in",
-   "detail": "43'",
+   "detail": "45'+1'",
    "hg": 0,
    "ag": 0,
-   "hsh": 6.0,
+   "hsh": 7.0,
    "hsot": 3.0,
    "hy": 1.0,
    "hr": 0.0,
    "hcor": 2.0,
-   "ash": 3.0,
+   "ash": 4.0,
    "asot": 3.0,
    "ay": 0.0,
    "ar": 0.0,
-   "acor": 2.0,
+   "acor": 3.0,
    "scorers": []
   }
  },
@@ -1560,7 +1560,7 @@
   },
   "actual": {
    "state": "in",
-   "detail": "43'",
+   "detail": "45'",
    "hg": 0,
    "ag": 0,
    "hsh": 7.0,
@@ -1869,7 +1869,7 @@
   },
   "actual": {
    "state": "in",
-   "detail": "44'",
+   "detail": "45'+1'",
    "hg": 0,
    "ag": 1,
    "hsh": 5.0,
@@ -2184,7 +2184,7 @@
   },
   "actual": {
    "state": "in",
-   "detail": "42'",
+   "detail": "45'",
    "hg": 0,
    "ag": 0,
    "hsh": 4.0,
@@ -2493,7 +2493,7 @@
   },
   "actual": {
    "state": "in",
-   "detail": "44'",
+   "detail": "45'+2'",
    "hg": 2,
    "ag": 0,
    "hsh": 8.0,
@@ -2501,7 +2501,7 @@
    "hy": 0.0,
    "hr": 0.0,
    "hcor": 1.0,
-   "ash": 6.0,
+   "ash": 7.0,
    "asot": 1.0,
    "ay": 0.0,
    "ar": 0.0,

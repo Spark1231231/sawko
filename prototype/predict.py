@@ -436,7 +436,7 @@ if __name__ == "__main__":
         if all(exp.values()):
             lus, conf = exp, False
     res = predict_match(pr, a, lineups=lus, referee=(live or {}).get("referee"), use_market="--no-market" not in sys.argv, confirmed=conf)
-    res["generated_utc"] = pd.Timestamp.utcnow().strftime("%Y-%m-%d %H:%M")
+    res["generated_utc"] = pd.Timestamp.now("UTC").strftime("%Y-%m-%d %H:%M")
     (RES / f"prediction_{eid}.json").write_text(json.dumps(res, indent=1, ensure_ascii=False, default=float))
     f = res["final"]
     print(f"{res['home']} – {res['away']} | λ {f['lam'][0]:.2f}:{f['lam'][1]:.2f} | 1/X/2 {f['p1']:.3f}/{f['px']:.3f}/{f['p2']:.3f} | zostavy potvrdené: {res['lineup_confirmed']}")

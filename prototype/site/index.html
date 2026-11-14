@@ -1,0 +1,202 @@
+<!doctype html><html lang="sk"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow"><title>Predpovede zápasov – prototyp</title><style>
+:root{--bg:#f6f5f1;--card:#fff;--ink:#17191c;--mut:#687078;--line:#e2dfd7;--acc:#b7791f;--good:#1f7a4d;--bad:#b3382c;--bar1:#d99a2b;--barx:#a9adb3;--bar2:#3f4750}
+@media (prefers-color-scheme:dark){:root{--bg:#121416;--card:#1b1e21;--ink:#eceae4;--mut:#99a1a8;--line:#2c3035;--acc:#e0a94a;--good:#58c08a;--bad:#ee7c6e;--bar1:#e0a94a;--barx:#6d747b;--bar2:#c9cdd2}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:920px;margin:0 auto;padding:24px 16px 56px}
+h1{font-size:26px;margin:0 0 4px;letter-spacing:-.01em}h2{font-size:19px;margin:0}
+.sub{color:var(--mut);font-size:13px;margin:0 0 20px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin:0 0 14px}
+.head{display:flex;justify-content:space-between;gap:12px;align-items:baseline;flex-wrap:wrap}
+.meta{color:var(--mut);font-size:13px}
+.tip{margin:10px 0 6px;font-size:16px}.tip b{color:var(--acc)}
+.bar{display:flex;height:26px;border-radius:7px;overflow:hidden;font-size:12px;font-weight:600;font-variant-numeric:tabular-nums}
+.bar span{display:flex;align-items:center;justify-content:center;white-space:nowrap;min-width:0;overflow:hidden}
+.b1{background:var(--bar1);color:#1b1500}.bx{background:var(--barx);color:#111}.b2{background:var(--bar2);color:var(--bg)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:12px}
+.kpi{border:1px solid var(--line);border-radius:9px;padding:9px 11px}
+.kpi small{display:block;color:var(--mut);font-size:11.5px;text-transform:uppercase;letter-spacing:.04em}
+.kpi b{font-size:18px;font-variant-numeric:tabular-nums}.kpi span{display:block;color:var(--mut);font-size:12.5px}
+.real{margin-top:12px;padding:9px 11px;border-radius:9px;border:1px dashed var(--line);font-size:14px}
+.ok{color:var(--good);font-weight:600}.no{color:var(--bad);font-weight:600}
+details{margin-top:10px}summary{cursor:pointer;color:var(--mut);font-size:13px}
+.tw{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:13.5px;margin-top:8px;font-variant-numeric:tabular-nums}
+th,td{text-align:left;padding:5px 8px;border-bottom:1px solid var(--line);white-space:nowrap}th{color:var(--mut);font-weight:500;font-size:12px}
+.note{color:var(--mut);font-size:13px}
+</style></head><body><main>
+<h1>Predpovede zápasov</h1>
+<p class="sub">Prototyp: 85 % trh + 15 % vlastný model (sila tímov + Elo, kalibrované). Stránka zostavená 14. 11. 2026 20:32 UTC. Štatistický odhad, nie istota.</p>
+<section class='card'><b>Priebežné vyhodnotenie:</b> tip na výsledok trafený v 2 z 3 dohraných zápasov. <span class='note'>Pár zápasov nič nedokazuje – spoľahlivosť ukazuje backtest na 1 998 zápasoch (log-loss 0,805 na teste, trh 0,764).</span></section><section class="card">
+<div class="head"><h2>Haiti – USA</h2><span class="meta">2026-27 Concacaf Nations League, Quarterfinals · výkop 21:30 UTC · vypočítané 20:27 UTC</span></div>
+<p class="tip">Tip: <b>USA (77 %)</b> · najpravdepodobnejšie skóre <b>0:2</b></p>
+<div class="bar"><span class='b1' style='flex:0.087'>1 9 %</span><span class='bx' style='flex:0.141'>X 14 %</span><span class='b2' style='flex:0.772'>2 77 %</span></div>
+<div class="grid">
+<div class="kpi"><small>Očakávané góly</small><b>0,75 : 2,53</b><span>nad 2,5: 65 % · obaja: 49 %</span></div>
+<div class="kpi"><small>Žlté karty</small><b>3,1</b><span>1,8 + 1,3 · interval 1–6</span></div>
+<div class="kpi"><small>Strely</small><b>25,0</b><span>7,9 + 17,2 · interval 18–33</span></div>
+<div class="kpi"><small>Strely na bránu</small><b>9,6</b><span>2,6 + 7,1</span></div>
+<div class="kpi"><small>Rohy</small><b>8,9</b><span>2,8 + 6,0</span></div>
+<div class="kpi"><small>Najpravdep. strelci</small><b style="font-size:14px">Wilson Isidor 19 %; Justin Ellis 49 %</b><span>predpokladané zostavy</span></div>
+</div>
+
+<details><summary>Detail: skóre, zdroje, strelci</summary>
+<p class="note">Skóre: 0:2 12,2 % · 0:3 10,3 % · 1:2 9,2 % · 0:1 9,2 % · 1:3 7,8 %</p>
+<div class="tw"><table><tr><th>zdroj</th><th>1</th><th>X</th><th>2</th><th>oč. góly</th></tr><tr><td>len model</td><td>14 %</td><td>19 %</td><td>66 %</td><td>0,93 : 2,21</td></tr><tr><td>trh (kurzy bez marže)</td><td>8 %</td><td>13 %</td><td>79 %</td><td>0,73 : 2,60</td></tr>
+<tr><td><b>finálna (85 % trh)</b></td><td><b>9 %</b></td><td><b>14 %</b></td><td><b>77 %</b></td><td><b>0,75 : 2,53</b></td></tr></table></div>
+<div class="tw"><table><tr><th>hráč</th><th>tím</th><th>gól</th><th>2+ góly</th><th>kurz</th></tr><tr><td>Wilson Isidor</td><td>Haiti</td><td><b>19 %</b></td><td>2,0 %</td><td>–</td></tr><tr><td>Louicius Deedson</td><td>Haiti</td><td><b>12 %</b></td><td>0,7 %</td><td>–</td></tr><tr><td>Fafà Picault</td><td>Haiti</td><td><b>7 %</b></td><td>0,2 %</td><td>–</td></tr><tr><td>Ruben Providence</td><td>Haiti</td><td><b>5 %</b></td><td>0,1 %</td><td>–</td></tr><tr><td>Danley Jean Jacques</td><td>Haiti</td><td><b>5 %</b></td><td>0,1 %</td><td>–</td></tr><tr><td>Jean-Ricner Bellegarde</td><td>Haiti</td><td><b>5 %</b></td><td>0,1 %</td><td>–</td></tr><tr><td>Justin Ellis</td><td>USA</td><td><b>49 %</b></td><td>14,4 %</td><td>–</td></tr><tr><td>Malik Tillman</td><td>USA</td><td><b>25 %</b></td><td>3,5 %</td><td>–</td></tr><tr><td>Giovanni Reyna</td><td>USA</td><td><b>24 %</b></td><td>3,2 %</td><td>–</td></tr><tr><td>Sebastian Berhalter</td><td>USA</td><td><b>20 %</b></td><td>2,1 %</td><td>–</td></tr><tr><td>Brooklyn Raines</td><td>USA</td><td><b>14 %</b></td><td>1,0 %</td><td>–</td></tr><tr><td>Antonee Robinson</td><td>USA</td><td><b>12 %</b></td><td>0,7 %</td><td>–</td></tr></table></div>
+<p class="note">Žlté karty nad 2,5: 59 % · nad 3,5: 38 % · nad 4,5: 21 % · červená karta v zápase: 14 %</p>
+</details></section><section class="card">
+<div class="head"><h2>Rakúsko – Írsko</h2><span class="meta">Nations League · výkop 19:45 UTC · vypočítané 16:04 UTC</span></div>
+<p class="tip">Tip: <b>Rakúsko (59 %)</b> · najpravdepodobnejšie skóre <b>1:0</b></p>
+<div class="bar"><span class='b1' style='flex:0.590'>1 59 %</span><span class='bx' style='flex:0.243'>X 24 %</span><span class='b2' style='flex:0.167'>2 17 %</span></div>
+<div class="grid">
+<div class="kpi"><small>Očakávané góly</small><b>1,75 : 0,84</b><span>nad 2,5: 48 % · obaja: 47 %</span></div>
+<div class="kpi"><small>Žlté karty</small><b>3,8</b><span>1,6 + 2,2 · interval 1–7</span></div>
+<div class="kpi"><small>Strely</small><b>24,0</b><span>15,4 + 8,6 · interval 17–32</span></div>
+<div class="kpi"><small>Strely na bránu</small><b>8,0</b><span>5,4 + 2,6</span></div>
+<div class="kpi"><small>Rohy</small><b>8,2</b><span>5,1 + 3,1</span></div>
+<div class="kpi"><small>Najpravdep. strelci</small><b style="font-size:14px">Christoph Lang 28 %; Troy Parrott 17 %</b><span>predpokladané zostavy</span></div>
+</div>
+<div class='real'><b>Priebežne: 0:0</b> · žlté <span class=''>1</span> (čakané 3,8) · strely <span class=''>11</span> (čakané 24,0)</div>
+<details><summary>Detail: skóre, zdroje, strelci</summary>
+<p class="note">Skóre: 1:0 12,7 % · 2:0 11,7 % · 1:1 11,5 % · 2:1 9,7 % · 0:0 8,1 %</p>
+<div class="tw"><table><tr><th>zdroj</th><th>1</th><th>X</th><th>2</th><th>oč. góly</th></tr><tr><td>len model</td><td>62 %</td><td>24 %</td><td>13 %</td><td>1,78 : 0,80</td></tr><tr><td>trh (kurzy bez marže)</td><td>58 %</td><td>24 %</td><td>17 %</td><td>1,74 : 0,84</td></tr><tr><td>web – len model</td><td>67 %</td><td>21 %</td><td>12 %</td><td>2,00 : 0,71</td></tr>
+<tr><td><b>finálna (85 % trh)</b></td><td><b>59 %</b></td><td><b>24 %</b></td><td><b>17 %</b></td><td><b>1,75 : 0,84</b></td></tr></table></div>
+<div class="tw"><table><tr><th>hráč</th><th>tím</th><th>gól</th><th>2+ góly</th><th>kurz</th></tr><tr><td>Christoph Lang</td><td>Rakúsko</td><td><b>28 %</b></td><td>4,2 %</td><td>2.9</td></tr><tr><td>Saša Kalajdžić</td><td>Rakúsko</td><td><b>26 %</b></td><td>3,7 %</td><td>2.6</td></tr><tr><td>Chukwubuike Adamu</td><td>Rakúsko</td><td><b>18 %</b></td><td>1,7 %</td><td>–</td></tr><tr><td>Romano Schmid</td><td>Rakúsko</td><td><b>16 %</b></td><td>1,4 %</td><td>5</td></tr><tr><td>Konrad Laimer</td><td>Rakúsko</td><td><b>10 %</b></td><td>0,5 %</td><td>8.5</td></tr><tr><td>Sascha Horvath</td><td>Rakúsko</td><td><b>9 %</b></td><td>0,4 %</td><td>–</td></tr><tr><td>Troy Parrott</td><td>Írsko</td><td><b>17 %</b></td><td>1,6 %</td><td>3.7</td></tr><tr><td>Jack Moylan</td><td>Írsko</td><td><b>11 %</b></td><td>0,6 %</td><td>5</td></tr><tr><td>Adam Idah</td><td>Írsko</td><td><b>11 %</b></td><td>0,6 %</td><td>5</td></tr><tr><td>Chiedozie Ogbene</td><td>Írsko</td><td><b>5 %</b></td><td>0,1 %</td><td>10</td></tr><tr><td>Conor Coventry</td><td>Írsko</td><td><b>3 %</b></td><td>0,0 %</td><td>20</td></tr><tr><td>Ryan Manning</td><td>Írsko</td><td><b>3 %</b></td><td>0,0 %</td><td>20</td></tr></table></div>
+<p class="note">Žlté karty nad 2,5: 71 % · nad 3,5: 51 % · nad 4,5: 34 % · červená karta v zápase: 14 %</p>
+</details></section><section class="card">
+<div class="head"><h2>Severné Írsko – Ukrajina</h2><span class="meta">Nations League · výkop 19:45 UTC · vypočítané 16:04 UTC</span></div>
+<p class="tip">Tip: <b>Severné Írsko (37 %)</b> · najpravdepodobnejšie skóre <b>1:1</b></p>
+<div class="bar"><span class='b1' style='flex:0.372'>1 37 %</span><span class='bx' style='flex:0.326'>X 33 %</span><span class='b2' style='flex:0.301'>2 30 %</span></div>
+<div class="grid">
+<div class="kpi"><small>Očakávané góly</small><b>1,11 : 0,96</b><span>nad 2,5: 34 % · obaja: 42 %</span></div>
+<div class="kpi"><small>Žlté karty</small><b>4,1</b><span>1,9 + 2,3 · interval 1–7</span></div>
+<div class="kpi"><small>Strely</small><b>21,7</b><span>12,1 + 9,7 · interval 15–29</span></div>
+<div class="kpi"><small>Strely na bránu</small><b>7,4</b><span>4,1 + 3,2</span></div>
+<div class="kpi"><small>Rohy</small><b>8,3</b><span>4,4 + 3,9</span></div>
+<div class="kpi"><small>Najpravdep. strelci</small><b style="font-size:14px">Isaac Price 19 %; Igor Krasnopir 22 %</b><span>predpokladané zostavy</span></div>
+</div>
+<div class='real'><b>Priebežne: 0:0</b> · žlté <span class=''>0</span> (čakané 4,1) · strely <span class=''>9</span> (čakané 21,7)</div>
+<details><summary>Detail: skóre, zdroje, strelci</summary>
+<p class="note">Skóre: 1:1 14,7 % · 0:0 13,8 % · 1:0 13,0 % · 0:1 11,2 % · 2:0 7,6 %</p>
+<div class="tw"><table><tr><th>zdroj</th><th>1</th><th>X</th><th>2</th><th>oč. góly</th></tr><tr><td>len model</td><td>35 %</td><td>31 %</td><td>34 %</td><td>1,14 : 1,11</td></tr><tr><td>trh (kurzy bez marže)</td><td>38 %</td><td>33 %</td><td>29 %</td><td>1,10 : 0,94</td></tr><tr><td>web – len model</td><td>44 %</td><td>31 %</td><td>25 %</td><td>1,21 : 0,85</td></tr>
+<tr><td><b>finálna (85 % trh)</b></td><td><b>37 %</b></td><td><b>33 %</b></td><td><b>30 %</b></td><td><b>1,11 : 0,96</b></td></tr></table></div>
+<div class="tw"><table><tr><th>hráč</th><th>tím</th><th>gól</th><th>2+ góly</th><th>kurz</th></tr><tr><td>Isaac Price</td><td>Severné Írsko</td><td><b>19 %</b></td><td>2,0 %</td><td>5</td></tr><tr><td>Jamie Donley</td><td>Severné Írsko</td><td><b>15 %</b></td><td>1,1 %</td><td>5</td></tr><tr><td>Patrick Kelly</td><td>Severné Írsko</td><td><b>9 %</b></td><td>0,4 %</td><td>10</td></tr><tr><td>Ethan Galbraith</td><td>Severné Írsko</td><td><b>8 %</b></td><td>0,4 %</td><td>–</td></tr><tr><td>Ciaron Brown</td><td>Severné Írsko</td><td><b>8 %</b></td><td>0,3 %</td><td>14</td></tr><tr><td>Justin Devenny</td><td>Severné Írsko</td><td><b>7 %</b></td><td>0,2 %</td><td>9.5</td></tr><tr><td>Igor Krasnopir</td><td>Ukrajina</td><td><b>22 %</b></td><td>2,7 %</td><td>–</td></tr><tr><td>Roman Yaremchuk</td><td>Ukrajina</td><td><b>17 %</b></td><td>1,5 %</td><td>4.25</td></tr><tr><td>Yegor Nazaryna</td><td>Ukrajina</td><td><b>7 %</b></td><td>0,3 %</td><td>–</td></tr><tr><td>Oleg Ocheretko</td><td>Ukrajina</td><td><b>7 %</b></td><td>0,3 %</td><td>–</td></tr><tr><td>Ivan Varfolomeev</td><td>Ukrajina</td><td><b>5 %</b></td><td>0,1 %</td><td>–</td></tr><tr><td>Ilya Zabarnyi</td><td>Ukrajina</td><td><b>3 %</b></td><td>0,0 %</td><td>–</td></tr></table></div>
+<p class="note">Žlté karty nad 2,5: 76 % · nad 3,5: 57 % · nad 4,5: 40 % · červená karta v zápase: 14 %</p>
+</details></section><section class="card">
+<div class="head"><h2>Portugalsko – Dánsko</h2><span class="meta">Nations League · výkop 19:45 UTC · vypočítané 16:04 UTC</span></div>
+<p class="tip">Tip: <b>Portugalsko (61 %)</b> · najpravdepodobnejšie skóre <b>2:1</b></p>
+<div class="bar"><span class='b1' style='flex:0.615'>1 61 %</span><span class='bx' style='flex:0.213'>X 21 %</span><span class='b2' style='flex:0.172'>2 17 %</span></div>
+<div class="grid">
+<div class="kpi"><small>Očakávané góly</small><b>2,09 : 1,04</b><span>nad 2,5: 61 % · obaja: 57 %</span></div>
+<div class="kpi"><small>Žlté karty</small><b>3,5</b><span>1,7 + 1,9 · interval 1–6</span></div>
+<div class="kpi"><small>Strely</small><b>26,1</b><span>16,1 + 10,1 · interval 18–34</span></div>
+<div class="kpi"><small>Strely na bránu</small><b>8,8</b><span>5,6 + 3,2</span></div>
+<div class="kpi"><small>Rohy</small><b>10,0</b><span>6,3 + 3,7</span></div>
+<div class="kpi"><small>Najpravdep. strelci</small><b style="font-size:14px">Gonçalo Ramos 35 %; Rasmus Højlund 23 %</b><span>predpokladané zostavy</span></div>
+</div>
+<div class='real'><b>Priebežne: 0:1</b> · žlté <span class=''>0</span> (čakané 3,5) · strely <span class=''>12</span> (čakané 26,1) · strelci: Pierre-Emile Højbjerg</div>
+<details><summary>Detail: skóre, zdroje, strelci</summary>
+<p class="note">Skóre: 2:1 10,0 % · 1:1 9,9 % · 2:0 9,7 % · 1:0 8,7 % · 3:1 7,0 %</p>
+<div class="tw"><table><tr><th>zdroj</th><th>1</th><th>X</th><th>2</th><th>oč. góly</th></tr><tr><td>len model</td><td>57 %</td><td>24 %</td><td>18 %</td><td>1,82 : 1,02</td></tr><tr><td>trh (kurzy bez marže)</td><td>62 %</td><td>21 %</td><td>17 %</td><td>2,14 : 1,04</td></tr><tr><td>web – len model</td><td>53 %</td><td>24 %</td><td>23 %</td><td>1,91 : 1,20</td></tr>
+<tr><td><b>finálna (85 % trh)</b></td><td><b>61 %</b></td><td><b>21 %</b></td><td><b>17 %</b></td><td><b>2,09 : 1,04</b></td></tr></table></div>
+<div class="tw"><table><tr><th>hráč</th><th>tím</th><th>gól</th><th>2+ góly</th><th>kurz</th></tr><tr><td>Gonçalo Ramos</td><td>Portugalsko</td><td><b>35 %</b></td><td>7,2 %</td><td>2.2</td></tr><tr><td>João Félix</td><td>Portugalsko</td><td><b>34 %</b></td><td>6,6 %</td><td>2.5</td></tr><tr><td>Bruno Fernandes</td><td>Portugalsko</td><td><b>17 %</b></td><td>1,6 %</td><td>6.5</td></tr><tr><td>Trincão</td><td>Portugalsko</td><td><b>17 %</b></td><td>1,5 %</td><td>3.1</td></tr><tr><td>Carlos Forbs</td><td>Portugalsko</td><td><b>9 %</b></td><td>0,4 %</td><td>–</td></tr><tr><td>João Palhinha</td><td>Portugalsko</td><td><b>6 %</b></td><td>0,2 %</td><td>10</td></tr><tr><td>Rasmus Højlund</td><td>Dánsko</td><td><b>23 %</b></td><td>2,9 %</td><td>3.7</td></tr><tr><td>Gustav Isaksen</td><td>Dánsko</td><td><b>16 %</b></td><td>1,3 %</td><td>4.5</td></tr><tr><td>Mohamed Daramy</td><td>Dánsko</td><td><b>8 %</b></td><td>0,3 %</td><td>6</td></tr><tr><td>William Osula</td><td>Dánsko</td><td><b>7 %</b></td><td>0,3 %</td><td>–</td></tr><tr><td>Victor Froholdt</td><td>Dánsko</td><td><b>6 %</b></td><td>0,2 %</td><td>8.5</td></tr><tr><td>Joakim Mæhle</td><td>Dánsko</td><td><b>4 %</b></td><td>0,1 %</td><td>14</td></tr></table></div>
+<p class="note">Žlté karty nad 2,5: 67 % · nad 3,5: 46 % · nad 4,5: 29 % · červená karta v zápase: 14 %</p>
+</details></section><section class="card">
+<div class="head"><h2>Rumunsko – Poľsko</h2><span class="meta">Nations League · výkop 19:45 UTC · vypočítané 16:04 UTC</span></div>
+<p class="tip">Tip: <b>Poľsko (56 %)</b> · najpravdepodobnejšie skóre <b>1:1</b></p>
+<div class="bar"><span class='b1' style='flex:0.202'>1 20 %</span><span class='bx' style='flex:0.235'>X 23 %</span><span class='b2' style='flex:0.563'>2 56 %</span></div>
+<div class="grid">
+<div class="kpi"><small>Očakávané góly</small><b>1,05 : 1,86</b><span>nad 2,5: 56 % · obaja: 55 %</span></div>
+<div class="kpi"><small>Žlté karty</small><b>4,9</b><span>2,6 + 2,3 · interval 2–8</span></div>
+<div class="kpi"><small>Strely</small><b>25,9</b><span>9,6 + 16,3 · interval 18–34</span></div>
+<div class="kpi"><small>Strely na bránu</small><b>8,6</b><span>3,1 + 5,6</span></div>
+<div class="kpi"><small>Rohy</small><b>8,9</b><span>3,2 + 5,7</span></div>
+<div class="kpi"><small>Najpravdep. strelci</small><b style="font-size:14px">Daniel Bîrligea 24 %; Robert Lewandowski 37 %</b><span>predpokladané zostavy</span></div>
+</div>
+<div class='real'><b>Priebežne: 0:0</b> · žlté <span class=''>2</span> (čakané 4,9) · strely <span class=''>10</span> (čakané 25,9)</div>
+<details><summary>Detail: skóre, zdroje, strelci</summary>
+<p class="note">Skóre: 1:1 11,1 % · 1:2 10,0 % · 0:1 9,6 % · 0:2 9,6 % · 1:3 6,2 %</p>
+<div class="tw"><table><tr><th>zdroj</th><th>1</th><th>X</th><th>2</th><th>oč. góly</th></tr><tr><td>len model</td><td>27 %</td><td>26 %</td><td>47 %</td><td>1,18 : 1,52</td></tr><tr><td>trh (kurzy bez marže)</td><td>19 %</td><td>23 %</td><td>58 %</td><td>1,02 : 1,93</td></tr><tr><td>web – len model</td><td>28 %</td><td>27 %</td><td>45 %</td><td>1,15 : 1,51</td></tr>
+<tr><td><b>finálna (85 % trh)</b></td><td><b>20 %</b></td><td><b>23 %</b></td><td><b>56 %</b></td><td><b>1,05 : 1,86</b></td></tr></table></div>
+<div class="tw"><table><tr><th>hráč</th><th>tím</th><th>gól</th><th>2+ góly</th><th>kurz</th></tr><tr><td>Daniel Bîrligea</td><td>Rumunsko</td><td><b>24 %</b></td><td>3,1 %</td><td>3.6</td></tr><tr><td>Dennis Man</td><td>Rumunsko</td><td><b>15 %</b></td><td>1,2 %</td><td>4.5</td></tr><tr><td>Ianis Hagi</td><td>Rumunsko</td><td><b>8 %</b></td><td>0,3 %</td><td>5.5</td></tr><tr><td>Florinel Coman</td><td>Rumunsko</td><td><b>8 %</b></td><td>0,3 %</td><td>–</td></tr><tr><td>Vlad Dragomir</td><td>Rumunsko</td><td><b>6 %</b></td><td>0,2 %</td><td>7</td></tr><tr><td>Tudor Băluță</td><td>Rumunsko</td><td><b>5 %</b></td><td>0,1 %</td><td>14</td></tr><tr><td>Robert Lewandowski</td><td>Poľsko</td><td><b>37 %</b></td><td>8,0 %</td><td>2</td></tr><tr><td>Sebastian Szymański</td><td>Poľsko</td><td><b>17 %</b></td><td>1,5 %</td><td>5</td></tr><tr><td>Marcel Reguła</td><td>Poľsko</td><td><b>12 %</b></td><td>0,8 %</td><td>3.8</td></tr><tr><td>Kacper Urbański</td><td>Poľsko</td><td><b>12 %</b></td><td>0,7 %</td><td>5</td></tr><tr><td>Wiktor Nowak</td><td>Poľsko</td><td><b>11 %</b></td><td>0,7 %</td><td>5</td></tr><tr><td>Nicola Zalewski</td><td>Poľsko</td><td><b>10 %</b></td><td>0,5 %</td><td>5.5</td></tr></table></div>
+<p class="note">Žlté karty nad 2,5: 84 % · nad 3,5: 70 % · nad 4,5: 53 % · červená karta v zápase: 14 %</p>
+</details></section><section class="card">
+<div class="head"><h2>Švédsko – Bosna a Hercegovina</h2><span class="meta">Nations League · výkop 19:45 UTC · vypočítané 16:04 UTC</span></div>
+<p class="tip">Tip: <b>Švédsko (67 %)</b> · najpravdepodobnejšie skóre <b>2:0</b></p>
+<div class="bar"><span class='b1' style='flex:0.669'>1 67 %</span><span class='bx' style='flex:0.203'>X 20 %</span><span class='b2' style='flex:0.128'>2 13 %</span></div>
+<div class="grid">
+<div class="kpi"><small>Očakávané góly</small><b>2,07 : 0,80</b><span>nad 2,5: 55 % · obaja: 49 %</span></div>
+<div class="kpi"><small>Žlté karty</small><b>3,8</b><span>1,2 + 2,5 · interval 1–7</span></div>
+<div class="kpi"><small>Strely</small><b>23,3</b><span>14,8 + 8,5 · interval 16–31</span></div>
+<div class="kpi"><small>Strely na bránu</small><b>8,6</b><span>5,7 + 2,9</span></div>
+<div class="kpi"><small>Rohy</small><b>8,8</b><span>5,9 + 2,9</span></div>
+<div class="kpi"><small>Najpravdep. strelci</small><b style="font-size:14px">Viktor Gyökeres 40 %; Ermedin Demirović 15 %</b><span>predpokladané zostavy</span></div>
+</div>
+<div class='real'><b>Priebežne: 2:0</b> · žlté <span class=''>0</span> (čakané 3,8) · strely <span class=''>15</span> (čakané 23,3) · strelci: Daniel Svensson, Viktor Gyökeres</div>
+<details><summary>Detail: skóre, zdroje, strelci</summary>
+<p class="note">Skóre: 2:0 12,2 % · 1:0 11,3 % · 2:1 9,8 % · 1:1 9,7 % · 3:0 8,4 %</p>
+<div class="tw"><table><tr><th>zdroj</th><th>1</th><th>X</th><th>2</th><th>oč. góly</th></tr><tr><td>len model</td><td>59 %</td><td>24 %</td><td>18 %</td><td>1,87 : 1,01</td></tr><tr><td>trh (kurzy bez marže)</td><td>68 %</td><td>20 %</td><td>12 %</td><td>2,10 : 0,77</td></tr><tr><td>web – len model</td><td>57 %</td><td>24 %</td><td>18 %</td><td>1,80 : 0,92</td></tr>
+<tr><td><b>finálna (85 % trh)</b></td><td><b>67 %</b></td><td><b>20 %</b></td><td><b>13 %</b></td><td><b>2,07 : 0,80</b></td></tr></table></div>
+<div class="tw"><table><tr><th>hráč</th><th>tím</th><th>gól</th><th>2+ góly</th><th>kurz</th></tr><tr><td>Viktor Gyökeres</td><td>Švédsko</td><td><b>40 %</b></td><td>9,3 %</td><td>2.03</td></tr><tr><td>Alexander Isak</td><td>Švédsko</td><td><b>38 %</b></td><td>8,6 %</td><td>2.14</td></tr><tr><td>Anthony Elanga</td><td>Švédsko</td><td><b>19 %</b></td><td>1,8 %</td><td>3.75</td></tr><tr><td>Yasin Ayari</td><td>Švédsko</td><td><b>16 %</b></td><td>1,3 %</td><td>5.4</td></tr><tr><td>Alieu Njie</td><td>Švédsko</td><td><b>7 %</b></td><td>0,2 %</td><td>–</td></tr><tr><td>Daniel Svensson</td><td>Švédsko</td><td><b>5 %</b></td><td>0,1 %</td><td>9.8</td></tr><tr><td>Ermedin Demirović</td><td>Bosna a Hercegovina</td><td><b>15 %</b></td><td>1,2 %</td><td>4.9</td></tr><tr><td>Kerim Alajbegović</td><td>Bosna a Hercegovina</td><td><b>13 %</b></td><td>0,9 %</td><td>6.4</td></tr><tr><td>Armin Gigović</td><td>Bosna a Hercegovina</td><td><b>7 %</b></td><td>0,3 %</td><td>10</td></tr><tr><td>Esmir Bajraktarević</td><td>Bosna a Hercegovina</td><td><b>6 %</b></td><td>0,2 %</td><td>7</td></tr><tr><td>Ivan Bašić</td><td>Bosna a Hercegovina</td><td><b>6 %</b></td><td>0,2 %</td><td>13</td></tr><tr><td>Amar Memić</td><td>Bosna a Hercegovina</td><td><b>4 %</b></td><td>0,1 %</td><td>13</td></tr></table></div>
+<p class="note">Žlté karty nad 2,5: 70 % · nad 3,5: 51 % · nad 4,5: 33 % · červená karta v zápase: 14 %</p>
+</details></section><section class="card">
+<div class="head"><h2>Gruzínsko – Maďarsko</h2><span class="meta">Nations League · výkop 17:00 UTC · vypočítané 16:04 UTC</span></div>
+<p class="tip">Tip: <b>Maďarsko (40 %)</b> · najpravdepodobnejšie skóre <b>1:1</b></p>
+<div class="bar"><span class='b1' style='flex:0.300'>1 30 %</span><span class='bx' style='flex:0.302'>X 30 %</span><span class='b2' style='flex:0.399'>2 40 %</span></div>
+<div class="grid">
+<div class="kpi"><small>Očakávané góly</small><b>1,05 : 1,24</b><span>nad 2,5: 40 % · obaja: 47 %</span></div>
+<div class="kpi"><small>Žlté karty</small><b>4,9</b><span>2,3 + 2,6 · interval 2–8</span></div>
+<div class="kpi"><small>Strely</small><b>24,2</b><span>11,0 + 13,2 · interval 17–32</span></div>
+<div class="kpi"><small>Strely na bránu</small><b>8,1</b><span>3,7 + 4,4</span></div>
+<div class="kpi"><small>Rohy</small><b>8,6</b><span>4,1 + 4,5</span></div>
+<div class="kpi"><small>Najpravdep. strelci</small><b style="font-size:14px">Georges Mikautadze 23 %; Dominik Szoboszlai 17 %</b><span>predpokladané zostavy</span></div>
+</div>
+<div class='real'><b>Skutočnosť: 0:2</b> · tip <span class='ok'>trafený</span> · skóre <span class='no'>iné</span> · žlté <span class='ok'>3</span> (čakané 4,9) · strely <span class='ok'>19</span> (čakané 24,2) · strelci: Barnabás Varga, Lasha Dvali</div>
+<details><summary>Detail: skóre, zdroje, strelci</summary>
+<p class="note">Skóre: 1:1 14,1 % · 0:1 11,7 % · 0:0 11,0 % · 1:0 9,7 % · 1:2 8,2 %</p>
+<div class="tw"><table><tr><th>zdroj</th><th>1</th><th>X</th><th>2</th><th>oč. góly</th></tr><tr><td>len model</td><td>31 %</td><td>29 %</td><td>39 %</td><td>1,14 : 1,27</td></tr><tr><td>trh (kurzy bez marže)</td><td>30 %</td><td>30 %</td><td>40 %</td><td>1,03 : 1,24</td></tr><tr><td>web – len model</td><td>31 %</td><td>30 %</td><td>39 %</td><td>1,05 : 1,20</td></tr>
+<tr><td><b>finálna (85 % trh)</b></td><td><b>30 %</b></td><td><b>30 %</b></td><td><b>40 %</b></td><td><b>1,05 : 1,24</b></td></tr></table></div>
+<div class="tw"><table><tr><th>hráč</th><th>tím</th><th>gól</th><th>2+ góly</th><th>kurz</th></tr><tr><td>Georges Mikautadze</td><td>Gruzínsko</td><td><b>23 %</b></td><td>2,9 %</td><td>3.4</td></tr><tr><td>Zuriko Davitashvili</td><td>Gruzínsko</td><td><b>9 %</b></td><td>0,5 %</td><td>6.2</td></tr><tr><td>Irakli Yegoian</td><td>Gruzínsko</td><td><b>7 %</b></td><td>0,3 %</td><td>7.4</td></tr><tr><td>Giorgi Chakvetadze</td><td>Gruzínsko</td><td><b>7 %</b></td><td>0,3 %</td><td>7.2</td></tr><tr><td>Giorgi Tsitaishvili</td><td>Gruzínsko</td><td><b>6 %</b></td><td>0,2 %</td><td>8.6</td></tr><tr><td>Anzor Mekvabishvili</td><td>Gruzínsko</td><td><b>4 %</b></td><td>0,1 %</td><td>14</td></tr><tr><td>Dominik Szoboszlai</td><td>Maďarsko</td><td><b>17 %</b></td><td>1,6 %</td><td>4</td></tr><tr><td>Barnabás Varga</td><td>Maďarsko</td><td><b>16 %</b></td><td>1,4 %</td><td>–</td></tr><tr><td>Roland Sallai</td><td>Maďarsko</td><td><b>14 %</b></td><td>1,0 %</td><td>–</td></tr><tr><td>Gabor Jurek</td><td>Maďarsko</td><td><b>11 %</b></td><td>0,7 %</td><td>4.8</td></tr><tr><td>András Schäfer</td><td>Maďarsko</td><td><b>7 %</b></td><td>0,3 %</td><td>9.8</td></tr><tr><td>Márk Csinger</td><td>Maďarsko</td><td><b>7 %</b></td><td>0,2 %</td><td>17</td></tr></table></div>
+<p class="note">Žlté karty nad 2,5: 84 % · nad 3,5: 69 % · nad 4,5: 52 % · červená karta v zápase: 14 %</p>
+</details></section><section class="card">
+<div class="head"><h2>Nórsko – Wales</h2><span class="meta">Nations League · výkop 17:00 UTC · vypočítané 16:04 UTC</span></div>
+<p class="tip">Tip: <b>Nórsko (77 %)</b> · najpravdepodobnejšie skóre <b>2:0</b></p>
+<div class="bar"><span class='b1' style='flex:0.767'>1 77 %</span><span class='bx' style='flex:0.144'>X 14 %</span><span class='b2' style='flex:0.089'>2 9 %</span></div>
+<div class="grid">
+<div class="kpi"><small>Očakávané góly</small><b>2,58 : 0,81</b><span>nad 2,5: 67 % · obaja: 51 %</span></div>
+<div class="kpi"><small>Žlté karty</small><b>3,4</b><span>1,2 + 2,2 · interval 1–6</span></div>
+<div class="kpi"><small>Strely</small><b>26,9</b><span>19,7 + 7,2 · interval 19–35</span></div>
+<div class="kpi"><small>Strely na bránu</small><b>8,9</b><span>6,5 + 2,4</span></div>
+<div class="kpi"><small>Rohy</small><b>9,5</b><span>6,9 + 2,6</span></div>
+<div class="kpi"><small>Najpravdep. strelci</small><b style="font-size:14px">Erling Haaland 64 %; Daniel James 10 %</b><span>predpokladané zostavy</span></div>
+</div>
+<div class='real'><b>Skutočnosť: 3:1</b> · tip <span class='ok'>trafený</span> · skóre <span class='no'>iné</span> · žlté <span class='ok'>3</span> (čakané 3,4) · strely <span class='ok'>27</span> (čakané 26,9) · strelci: Andreas Schjelderup, Antonio Nusa, David Brooks, Erling Haaland</div>
+<details><summary>Detail: skóre, zdroje, strelci</summary>
+<p class="note">Skóre: 2:0 11,4 % · 3:0 9,8 % · 2:1 9,3 % · 1:0 8,4 % · 3:1 8,0 %</p>
+<div class="tw"><table><tr><th>zdroj</th><th>1</th><th>X</th><th>2</th><th>oč. góly</th></tr><tr><td>len model</td><td>60 %</td><td>24 %</td><td>16 %</td><td>1,85 : 0,94</td></tr><tr><td>trh (kurzy bez marže)</td><td>79 %</td><td>13 %</td><td>8 %</td><td>2,74 : 0,79</td></tr><tr><td>web – len model</td><td>63 %</td><td>22 %</td><td>15 %</td><td>1,95 : 0,84</td></tr>
+<tr><td><b>finálna (85 % trh)</b></td><td><b>77 %</b></td><td><b>14 %</b></td><td><b>9 %</b></td><td><b>2,58 : 0,81</b></td></tr></table></div>
+<div class="tw"><table><tr><th>hráč</th><th>tím</th><th>gól</th><th>2+ góly</th><th>kurz</th></tr><tr><td>Erling Haaland</td><td>Nórsko</td><td><b>64 %</b></td><td>26,9 %</td><td>1.4</td></tr><tr><td>Antonio Nusa</td><td>Nórsko</td><td><b>24 %</b></td><td>3,2 %</td><td>3</td></tr><tr><td>Oscar Bobb</td><td>Nórsko</td><td><b>22 %</b></td><td>2,6 %</td><td>3.4</td></tr><tr><td>Martin Ødegaard</td><td>Nórsko</td><td><b>17 %</b></td><td>1,6 %</td><td>4.25</td></tr><tr><td>Patrick Berg</td><td>Nórsko</td><td><b>7 %</b></td><td>0,3 %</td><td>6.5</td></tr><tr><td>Kristoffer Ajer</td><td>Nórsko</td><td><b>7 %</b></td><td>0,2 %</td><td>13</td></tr><tr><td>Daniel James</td><td>Wales</td><td><b>10 %</b></td><td>0,6 %</td><td>6</td></tr><tr><td>Harry Wilson</td><td>Wales</td><td><b>9 %</b></td><td>0,4 %</td><td>–</td></tr><tr><td>Lewis Koumas</td><td>Wales</td><td><b>9 %</b></td><td>0,4 %</td><td>6.5</td></tr><tr><td>Brennan Johnson</td><td>Wales</td><td><b>7 %</b></td><td>0,3 %</td><td>6.5</td></tr><tr><td>Neco Williams</td><td>Wales</td><td><b>5 %</b></td><td>0,1 %</td><td>20</td></tr><tr><td>Ben Davies</td><td>Wales</td><td><b>4 %</b></td><td>0,1 %</td><td>20</td></tr></table></div>
+<p class="note">Žlté karty nad 2,5: 64 % · nad 3,5: 43 % · nad 4,5: 26 % · červená karta v zápase: 14 %</p>
+</details></section><section class="card">
+<div class="head"><h2>Kosovo – Izrael</h2><span class="meta">Nations League · výkop 14:00 UTC · vypočítané 16:04 UTC</span></div>
+<p class="tip">Tip: <b>Kosovo (53 %)</b> · najpravdepodobnejšie skóre <b>1:1</b></p>
+<div class="bar"><span class='b1' style='flex:0.529'>1 53 %</span><span class='bx' style='flex:0.255'>X 25 %</span><span class='b2' style='flex:0.216'>2 22 %</span></div>
+<div class="grid">
+<div class="kpi"><small>Očakávané góly</small><b>1,67 : 0,99</b><span>nad 2,5: 50 % · obaja: 52 %</span></div>
+<div class="kpi"><small>Žlté karty</small><b>4,2</b><span>2,0 + 2,2 · interval 2–7</span></div>
+<div class="kpi"><small>Strely</small><b>23,5</b><span>14,6 + 8,8 · interval 16–31</span></div>
+<div class="kpi"><small>Strely na bránu</small><b>8,3</b><span>5,2 + 3,1</span></div>
+<div class="kpi"><small>Rohy</small><b>7,9</b><span>4,6 + 3,3</span></div>
+<div class="kpi"><small>Najpravdep. strelci</small><b style="font-size:14px">Vedat Muriqi 36 %; Oscar Gloukh 14 %</b><span>predpokladané zostavy</span></div>
+</div>
+<div class='real'><b>Skutočnosť: 0:0</b> · tip <span class='no'>netrafený</span> · skóre <span class='no'>iné</span> · žlté <span class='ok'>4</span> (čakané 4,2) · strely <span class='ok'>22</span> (čakané 23,5)</div>
+<details><summary>Detail: skóre, zdroje, strelci</summary>
+<p class="note">Skóre: 1:1 12,1 % · 1:0 11,1 % · 2:0 9,8 % · 2:1 9,7 % · 0:0 7,6 %</p>
+<div class="tw"><table><tr><th>zdroj</th><th>1</th><th>X</th><th>2</th><th>oč. góly</th></tr><tr><td>len model</td><td>52 %</td><td>25 %</td><td>23 %</td><td>1,72 : 1,12</td></tr><tr><td>trh (kurzy bez marže)</td><td>53 %</td><td>25 %</td><td>21 %</td><td>1,66 : 0,97</td></tr><tr><td>web – len model</td><td>57 %</td><td>26 %</td><td>17 %</td><td>1,61 : 0,75</td></tr>
+<tr><td><b>finálna (85 % trh)</b></td><td><b>53 %</b></td><td><b>25 %</b></td><td><b>22 %</b></td><td><b>1,67 : 0,99</b></td></tr></table></div>
+<div class="tw"><table><tr><th>hráč</th><th>tím</th><th>gól</th><th>2+ góly</th><th>kurz</th></tr><tr><td>Vedat Muriqi</td><td>Kosovo</td><td><b>36 %</b></td><td>7,6 %</td><td>2.27</td></tr><tr><td>Edon Zhegrova</td><td>Kosovo</td><td><b>20 %</b></td><td>2,2 %</td><td>4.1</td></tr><tr><td>Milot Rashica</td><td>Kosovo</td><td><b>18 %</b></td><td>1,7 %</td><td>3.9</td></tr><tr><td>Veldin Hodža</td><td>Kosovo</td><td><b>12 %</b></td><td>0,7 %</td><td>6</td></tr><tr><td>Kreshnik Hajrizi</td><td>Kosovo</td><td><b>7 %</b></td><td>0,3 %</td><td>–</td></tr><tr><td>Leon Avdullahu</td><td>Kosovo</td><td><b>7 %</b></td><td>0,3 %</td><td>8.2</td></tr><tr><td>Oscar Gloukh</td><td>Izrael</td><td><b>14 %</b></td><td>1,1 %</td><td>5.6</td></tr><tr><td>Dor Peretz</td><td>Izrael</td><td><b>14 %</b></td><td>1,0 %</td><td>5.8</td></tr><tr><td>Idan Toklomati</td><td>Izrael</td><td><b>12 %</b></td><td>0,8 %</td><td>–</td></tr><tr><td>Liel Abada</td><td>Izrael</td><td><b>9 %</b></td><td>0,4 %</td><td>5.8</td></tr><tr><td>Ethane Azoulay</td><td>Izrael</td><td><b>8 %</b></td><td>0,3 %</td><td>7.6</td></tr><tr><td>Nikita Stoinov</td><td>Izrael</td><td><b>6 %</b></td><td>0,2 %</td><td>–</td></tr></table></div>
+<p class="note">Žlté karty nad 2,5: 77 % · nad 3,5: 59 % · nad 4,5: 41 % · červená karta v zápase: 14 %</p>
+</details></section>
+<p class="note">Karty, strely a rohy sú stredné hodnoty so 80 % intervalom; strelci = šanca aspoň jedného gólu. Predpovede zápasov Ligy národov boli vypočítané 14. 11. o 16:04 UTC, pred výkopmi.</p>
+</main></body></html>
