@@ -1251,10 +1251,10 @@
   },
   "actual": {
    "state": "in",
-   "detail": "36'",
+   "detail": "43'",
    "hg": 0,
    "ag": 0,
-   "hsh": 5.0,
+   "hsh": 6.0,
    "hsot": 3.0,
    "hy": 1.0,
    "hr": 0.0,
@@ -1263,7 +1263,7 @@
    "asot": 3.0,
    "ay": 0.0,
    "ar": 0.0,
-   "acor": 1.0,
+   "acor": 2.0,
    "scorers": []
   }
  },
@@ -1560,14 +1560,14 @@
   },
   "actual": {
    "state": "in",
-   "detail": "35'",
+   "detail": "43'",
    "hg": 0,
    "ag": 0,
-   "hsh": 3.0,
+   "hsh": 7.0,
    "hsot": 2.0,
    "hy": 0.0,
    "hr": 0.0,
-   "hcor": 1.0,
+   "hcor": 2.0,
    "ash": 2.0,
    "asot": 1.0,
    "ay": 0.0,
@@ -1869,20 +1869,26 @@
   },
   "actual": {
    "state": "in",
-   "detail": "36'",
+   "detail": "44'",
    "hg": 0,
-   "ag": 0,
+   "ag": 1,
    "hsh": 5.0,
    "hsot": 3.0,
    "hy": 0.0,
    "hr": 0.0,
    "hcor": 2.0,
-   "ash": 5.0,
-   "asot": 1.0,
+   "ash": 7.0,
+   "asot": 2.0,
    "ay": 0.0,
    "ar": 0.0,
-   "acor": 3.0,
-   "scorers": []
+   "acor": 4.0,
+   "scorers": [
+    [
+     "Denmark",
+     "Pierre-Emile Højbjerg",
+     "43'"
+    ]
+   ]
   }
  },
  {
@@ -2178,7 +2184,7 @@
   },
   "actual": {
    "state": "in",
-   "detail": "35'",
+   "detail": "42'",
    "hg": 0,
    "ag": 0,
    "hsh": 4.0,
@@ -2186,9 +2192,9 @@
    "hy": 1.0,
    "hr": 0.0,
    "hcor": 1.0,
-   "ash": 4.0,
+   "ash": 6.0,
    "asot": 0.0,
-   "ay": 0.0,
+   "ay": 1.0,
    "ar": 0.0,
    "acor": 3.0,
    "scorers": []
@@ -2487,7 +2493,7 @@
   },
   "actual": {
    "state": "in",
-   "detail": "37'",
+   "detail": "44'",
    "hg": 2,
    "ag": 0,
    "hsh": 8.0,
@@ -2495,7 +2501,7 @@
    "hy": 0.0,
    "hr": 0.0,
    "hcor": 1.0,
-   "ash": 4.0,
+   "ash": 6.0,
    "asot": 1.0,
    "ay": 0.0,
    "ar": 0.0,

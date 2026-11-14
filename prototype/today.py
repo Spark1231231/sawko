@@ -77,5 +77,35 @@ if __name__ == "__main__":
                 real += f", žlté {int(act['hy'] + act['ay'])}, strely {int(act['hsh'] + act['ash'])}"
         L.append(f"| {r['date'][11:16]} | {h} – {a} | {pct(fz['p1'])} / {pct(fz['px'])} / {pct(fz['p2'])} | {tip} | {fz['scores'][0][0]}:{fz['scores'][0][1]} | "
                  f"{num(fz['lam'][0], 2)} : {num(fz['lam'][1], 2)} | {num(r['yellow']['total'])} | {num(r['shots']['total'])} | {top} | {real} |")
+    done = [r for r in rows if (r.get("actual") or {}).get("state") == "post"]
+    if done:
+        tips = sum((r["actual"]["hg"] > r["actual"]["ag"], r["actual"]["hg"] == r["actual"]["ag"], r["actual"]["hg"] < r["actual"]["ag"])
+                   [int(np.argmax([r["final"]["p1"], r["final"]["px"], r["final"]["p2"]]))] for r in done)
+        def pr_out(r, key):
+            a_ = r["actual"]
+            o = 0 if a_["hg"] > a_["ag"] else 1 if a_["hg"] == a_["ag"] else 2
+            return [r[key]["p1"], r[key]["px"], r[key]["p2"]][o]
+        ll_f = -np.mean([np.log(pr_out(r, "final")) for r in done])
+        ll_m = -np.mean([np.log(pr_out(r, "model")) for r in done])
+        exact = sum((r["final"]["scores"][0][0], r["final"]["scores"][0][1]) == (r["actual"]["hg"], r["actual"]["ag"]) for r in done)
+        top3 = sum(any((i, j) == (r["actual"]["hg"], r["actual"]["ag"]) for i, j, _ in r["final"]["scores"][:3]) for r in done)
+        cnt = [r for r in done if r["actual"].get("hy") is not None and r["actual"].get("hsh") is not None]
+        mae_y = np.mean([abs(r["yellow"]["total"] - (r["actual"]["hy"] + r["actual"]["ay"])) for r in cnt]) if cnt else float("nan")
+        mae_s = np.mean([abs(r["shots"]["total"] - (r["actual"]["hsh"] + r["actual"]["ash"])) for r in cnt]) if cnt else float("nan")
+        in_y = sum(r["yellow"]["q10"] <= r["actual"]["hy"] + r["actual"]["ay"] <= r["yellow"]["q90"] for r in cnt)
+        in_s = sum(r["shots"]["q10"] <= r["actual"]["hsh"] + r["actual"]["ash"] <= r["shots"]["q90"] for r in cnt)
+        goals = sum(r["actual"]["hg"] + r["actual"]["ag"] for r in done)
+        exp_goals = sum(r["final"]["lam"][0] + r["final"]["lam"][1] for r in done)
+        L += ["", f"**Vyhodnotenie ({len(done)} dohraných zápasov – malá vzorka, len orientačne):** tip 1/X/2 trafený {tips}/{len(done)}; "
+              f"log-loss finálnej predpovede {num(ll_f, 3)} (len model {num(ll_m, 3)}); presné skóre {exact}/{len(done)}, v troch najpravdepodobnejších {top3}/{len(done)}; "
+              f"góly spolu {goals} (očakávané {num(exp_goals, 1)}); žlté karty: priem. chyba {num(mae_y, 2)}, v 80 % intervale {in_y}/{len(cnt)}; "
+              f"strely: priem. chyba {num(mae_s, 1)}, v 80 % intervale {in_s}/{len(cnt)}."]
+        sc_lines = []
+        for r in done:
+            names = {n for _, n, _ in r["actual"].get("scorers", []) if n}
+            picks = [(n, p) for s_ in ("h", "a") for n, p in r["top"].get(s_, [])[:1]]
+            sc_lines.append(f"{SK.get(r['home'], r['home'])} – {SK.get(r['away'], r['away'])}: strelci {', '.join(sorted(names)) or '–'}; "
+                            + "; ".join(f"{n} ({pct(p)}) {'✓' if any(PR.norm_name(n) == PR.norm_name(x) for x in names) else '✗'}" for n, p in picks))
+        L += ["", "Najpravdepodobnejší strelci vs skutočnosť:", ""] + [f"- {x}" for x in sc_lines]
     (RES / f"today_{day}.md").write_text("\n".join(L))
     print("\n".join(L))
