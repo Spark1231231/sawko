@@ -68,6 +68,9 @@ class Predictor:
         self.rho = self.cfg["rho"]
         self.D = int(w.day.max()) + 1 if as_of is None else (pd.Timestamp(as_of) - pd.Timestamp("1970-01-01")).days
         self.fit = W.fit_strength_at(w, self.D, scfg)
+        shcfg = dict(self.cfg["shots_cfg"])
+        shcfg["imp"] = tuple(shcfg["imp"])
+        self.fit_shots = W.fit_strength_at(w, self.D, shcfg)      # sila zo všetkých striel – tretí vstup stackingu
         sub = w[w.day < self.D]
         sub.attrs["teams"] = w.attrs["teams"]
         pre_h, pre_a, self.R = E.run_elo(sub, **self.cfg["elo_cfg"])
@@ -121,22 +124,24 @@ class Predictor:
 
     # ------------------------------------------------------------------ góly
     def raw(self, home: str, away: str, neutral: bool = False):
+        """Surové λ z troch modelov: sila z gólov, sila zo striel, Elo."""
         h, a = self.tid[home], self.tid[away]
-        f = self.fit
         hf = 0.0 if neutral else 1.0
-        ls_h = float(np.exp(f["mu"] + f["gam"] * hf + f["att"][h] - f["dfn"][a]))
-        ls_a = float(np.exp(f["mu"] + f["att"][a] - f["dfn"][h]))
+        out = []
+        for f in (self.fit, self.fit_shots):
+            out.append((float(np.exp(f["mu"] + f["gam"] * hf + f["att"][h] - f["dfn"][a])), float(np.exp(f["mu"] + f["att"][a] - f["dfn"][h]))))
         le_h, le_a = E.elo_lambdas(self.beta_elo, np.array([self.R[h]]), np.array([self.R[a]]), np.array([neutral]))
-        return ls_h, ls_a, float(le_h[0]), float(le_a[0])
+        out.append((float(le_h[0]), float(le_a[0])))
+        return out
 
     def goals(self, home: str, away: str, neutral: bool = False) -> dict:
-        ls_h, ls_a, le_h, le_a = self.raw(home, away, neutral)
+        feats = self.raw(home, away, neutral)
         hf = 0.0 if neutral else 1.0
         # kalibrácia podľa populácie: dva európske tímy -> „uefa“, inak „world“
         european = (home in self.uefa and away in self.uefa) if self.uefa else True
-        ch, ca, M, P = C.predict_calibrated(self.cal if european else self.cal_world, ls_h, ls_a, le_h, le_a, hf, self.rho)
+        ch, ca, M, P = C.predict_calibrated(self.cal if european else self.cal_world, feats, hf, self.rho)
         h, a = self.tid[home], self.tid[away]
-        return dict(lh=float(ch[0]), la=float(ca[0]), M=M[0], P=P[0], raw=dict(sila=(ls_h, ls_a), elo=(le_h, le_a)),
+        return dict(lh=float(ch[0]), la=float(ca[0]), M=M[0], P=P[0], raw=dict(sila=feats[0], strely=feats[1], elo=feats[2]),
                     calibration="uefa" if european else "world",
                     elo=(float(self.R[h]), float(self.R[a])), n_eff=(float(self.fit["n_eff"][h]), float(self.fit["n_eff"][a])),
                     att=(float(self.fit["att"][h]), float(self.fit["att"][a])), dfn=(float(self.fit["dfn"][h]), float(self.fit["dfn"][a])))

@@ -1,2 +1,22 @@
-{"shots": {"sigma": 0.1, "halflife": 600}, "sot": {"sigma": 0.1, "halflife": 600}, "corners": {"sigma": 0.1, "halflife": 600},
- "fouls": {"sigma": 0.1, "halflife": 600}, "yellow": {"sigma": 0.18, "halflife": 1100}}
+{
+ "shots": {
+  "sigma": 0.1,
+  "halflife": 350
+ },
+ "sot": {
+  "sigma": 0.1,
+  "halflife": 600
+ },
+ "corners": {
+  "sigma": 0.1,
+  "halflife": 600
+ },
+ "fouls": {
+  "sigma": 0.1,
+  "halflife": 600
+ },
+ "yellow": {
+  "sigma": 0.18,
+  "halflife": 1100
+ }
+}

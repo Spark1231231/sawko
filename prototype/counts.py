@@ -76,7 +76,8 @@ def features(d: pd.DataFrame, extra=None):
 
 
 def walk_counts(d: pd.DataFrame, kind: str, cfg: dict | None = None, start: str = "2019-01-01", use_features: bool = True,
-                extra=None):
+                extra=None, s_pred=None):
+    """s_pred: voliteľne iný rozdiel síl použitý LEN pri predpovedi (napr. z trhu); učenie ostáva na d.s."""
     """Vracia stredné hodnoty (dom, hos), disperziu r a základný priemer pre zápasy od `start`."""
     cfg = {**DEFAULT, **(cfg or {})}
     ch, ca, okc = KINDS[kind]
@@ -114,6 +115,12 @@ def walk_counts(d: pd.DataFrame, kind: str, cfg: dict | None = None, start: str 
                 beta = np.zeros(Xh.shape[1])
                 beta[0] = np.log(max((yh[tr].sum() + ya[tr].sum()) / max(2 * tr.sum(), 1), 1e-3)) if tr.any() else 0.0
             off_h, off_a = Xh @ beta, Xa @ beta
+            if s_pred is not None:
+                dp = d.assign(s=s_pred)
+                Ph, Pa = features(dp, extra)
+                poff_h, poff_a = Ph @ beta, Pa @ beta
+            else:
+                poff_h, poff_a = off_h, off_a
             if len(resid) > 400:
                 R = np.array(resid)
                 mu, yy = R[:, 1], R[:, 0]
@@ -128,8 +135,8 @@ def walk_counts(d: pd.DataFrame, kind: str, cfg: dict | None = None, start: str 
                                             off_h=off_h[sl], off_a=off_a[sl], init=init, sweeps=25)
         init = (att, dfn, mu0, 0.0)
         r_ = target[i:j]
-        mh[r_] = np.exp(mu0 + att[h[r_]] - dfn[a[r_]] + off_h[r_])
-        ma[r_] = np.exp(mu0 + att[a[r_]] - dfn[h[r_]] + off_a[r_])
+        mh[r_] = np.exp(mu0 + att[h[r_]] - dfn[a[r_]] + poff_h[r_])
+        ma[r_] = np.exp(mu0 + att[a[r_]] - dfn[h[r_]] + poff_a[r_])
         base = (yh[past].sum() + ya[past].sum()) / max(2 * past.sum(), 1)
         bh[r_], ba[r_] = base, base
         rr[r_] = r_now

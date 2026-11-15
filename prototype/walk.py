@@ -38,8 +38,19 @@ def walk_strength(w: pd.DataFrame, rows: np.ndarray, cfg: dict | None = None, re
         conv = (w.hg.values[has].sum() + w.ag.values[has].sum()) / max(w.hsot.values[has].sum() + w.asot.values[has].sum(), 1)
         yh = np.where(has, g * yh + (1 - g) * conv * np.nan_to_num(w.hsot.values), yh)
         ya = np.where(has, g * ya + (1 - g) * conv * np.nan_to_num(w.asot.values), ya)
+    mk = cfg.get("mkt_mix", 1.0)
+    if mk < 1 and "mlh" in w:
+        hasm = np.isfinite(w.mlh.values) & np.isfinite(w.mla.values)
+        yh = np.where(hasm, mk * yh + (1 - mk) * np.nan_to_num(w.mlh.values), yh)
+        ya = np.where(hasm, mk * ya + (1 - mk) * np.nan_to_num(w.mla.values), ya)
+    tcol = {"sot": ("hsot", "asot"), "shots": ("hsh", "ash"), "corners": ("hcor", "acor")}.get(cfg.get("target"))
+    if tcol and tcol[0] in w:      # model sily z inej štatistiky než gólov (strely na bránu, strely, rohy)
+        yh, ya = w[tcol[0]].values.astype(float), w[tcol[1]].values.astype(float)
     hf = (~w.neutral.values).astype(float)
     imp = np.asarray(cfg["imp"])[w.cls.values]
+    if tcol:
+        imp = imp * (np.isfinite(yh) & np.isfinite(ya))
+        yh, ya = np.nan_to_num(yh), np.nan_to_num(ya)
     lh, la = np.empty(len(rows)), np.empty(len(rows))
     order = np.argsort(day[rows], kind="stable")
     rows_s = rows[order]
@@ -107,8 +118,19 @@ def fit_strength_at(w: pd.DataFrame, D: int, cfg: dict | None = None):
         conv = (w.hg.values[has].sum() + w.ag.values[has].sum()) / max(w.hsot.values[has].sum() + w.asot.values[has].sum(), 1)
         yh = np.where(has, g * yh + (1 - g) * conv * np.nan_to_num(w.hsot.values), yh)
         ya = np.where(has, g * ya + (1 - g) * conv * np.nan_to_num(w.asot.values), ya)
+    mk = cfg.get("mkt_mix", 1.0)
+    if mk < 1 and "mlh" in w:
+        hasm = np.isfinite(w.mlh.values) & np.isfinite(w.mla.values)
+        yh = np.where(hasm, mk * yh + (1 - mk) * np.nan_to_num(w.mlh.values), yh)
+        ya = np.where(hasm, mk * ya + (1 - mk) * np.nan_to_num(w.mla.values), ya)
+    tcol = {"sot": ("hsot", "asot"), "shots": ("hsh", "ash"), "corners": ("hcor", "acor")}.get(cfg.get("target"))
+    if tcol and tcol[0] in w:      # model sily z inej štatistiky než gólov (strely na bránu, strely, rohy)
+        yh, ya = w[tcol[0]].values.astype(float), w[tcol[1]].values.astype(float)
     hf = (~w.neutral.values).astype(float)
     imp = np.asarray(cfg["imp"])[w.cls.values]
+    if tcol:
+        imp = imp * (np.isfinite(yh) & np.isfinite(ya))
+        yh, ya = np.nan_to_num(yh), np.nan_to_num(ya)
     lo = np.searchsorted(day, D - int(cfg["window"] * 365.25), "left")
     hi = np.searchsorted(day, D, "left")
     sl = slice(lo, hi)

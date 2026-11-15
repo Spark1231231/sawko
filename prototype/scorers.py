@@ -60,8 +60,9 @@ def pos_group(pos: str | None) -> str | None:
 
 
 class ScorerModel:
-    def __init__(self, kappa: float = 8.0, alpha: float = 0.6, kappa_sot: float = 4.0):
-        self.kappa, self.alpha, self.kappa_sot = kappa, alpha, kappa_sot
+    def __init__(self, kappa: float = 8.0, alpha: float = 0.6, kappa_sot: float = 4.0, gamma: float = 1.0):
+        # gamma > 1 „zaostrí“ podiely (θ^gamma pred normovaním): empirický Bayes ich inak priveľmi splošťuje k priemeru postu
+        self.kappa, self.alpha, self.kappa_sot, self.gamma = kappa, alpha, kappa_sot, gamma
         self.G = defaultdict(float)       # góly hráča
         self.S = defaultdict(float)       # strely na bránu hráča
         self.X = defaultdict(float)       # expozícia: očakávané góly tímu počas jeho minút
@@ -108,7 +109,7 @@ class ScorerModel:
     # ------------------------------------------------------------------ predpoveď
     def predict(self, lam_team: float, players: list[tuple], normalise: bool = True):
         """players: [(pid, post, m)] – m = očakávaný podiel času. Vracia (P(skóruje), očakávané góly)."""
-        th = np.array([self.theta(pid, self.group(pid, pos)) for pid, pos, _ in players])
+        th = np.array([self.theta(pid, self.group(pid, pos)) for pid, pos, _ in players]) ** self.gamma
         m = np.array([p[2] for p in players], float)
         if normalise and (th * m).sum() > 0:
             starters = m >= 0.5
@@ -172,7 +173,8 @@ def load_lineups() -> pd.DataFrame:
 
 
 def backtest(w: pd.DataFrame, lam: dict, lu: pd.DataFrame, params: dict, eval_from: str = "2023-01-01",
-             comps=E.EVAL_COMPS, collect: bool = False):
+             comps=E.EVAL_COMPS, collect: bool = False, lam_pred: dict | None = None):
+    """lam_pred: voliteľne iné λ tímu použité LEN pri predpovedi (napr. zmes s trhom); učenie ostáva na lam."""
     """lam: espn_id -> (λ_dom, λ_host, dátum, súťaž). Chronologicky: predpovedz základné jedenástky, potom uč."""
     model = ScorerModel(**params)
     base = ScorerModel(kappa=1e9, alpha=1.0)        # základ: iba priemer postu
@@ -191,6 +193,8 @@ def backtest(w: pd.DataFrame, lam: dict, lu: pd.DataFrame, params: dict, eval_fr
                 continue
             if date >= eval_from and comp in comps:
                 pl = [(r.pid, r.pos, 0.86) for r in st.itertuples(index=False)]
+                if lam_pred is not None and eid in lam_pred:
+                    lt = lam_pred[eid][0 if side == "h" else 1]
                 p, _ = model.predict(lt, pl)
                 pb, _ = base.predict(lt, pl)
                 y = (st.g.values > 0).astype(float)

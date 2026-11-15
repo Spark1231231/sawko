@@ -110,5 +110,23 @@
    }
   }
  },
- "selection_note": "halflife/sot_mix vybran\u00e9 na obdob\u00ed ladenia pri k=1.15 (t8 grid); Elo vstupuje cez stacking"
+ "selection_note": "halflife/sot_mix vybrané na období ladenia pri k=1.15 (t8 grid); Elo vstupuje cez stacking",
+ "shots_cfg": {
+  "halflife": 650,
+  "sigma_s": 1.5,
+  "sigma_t": 0.3,
+  "sot_mix": 1.0,
+  "imp": [
+   0.4,
+   0.8,
+   1.0,
+   1.0
+  ],
+  "target": "shots"
+ },
+ "stack_inputs": [
+  "sila (góly + strely na bránu)",
+  "sila zo všetkých striel",
+  "elo"
+ ]
 }

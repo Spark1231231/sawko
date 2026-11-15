@@ -1250,21 +1250,27 @@
    ]
   },
   "actual": {
-   "state": "in",
-   "detail": "45'+1'",
-   "hg": 0,
+   "state": "post",
+   "detail": "FT",
+   "hg": 1,
    "ag": 0,
-   "hsh": 7.0,
-   "hsot": 3.0,
-   "hy": 1.0,
+   "hsh": 21.0,
+   "hsot": 8.0,
+   "hy": 3.0,
    "hr": 0.0,
-   "hcor": 2.0,
-   "ash": 4.0,
-   "asot": 3.0,
-   "ay": 0.0,
+   "hcor": 7.0,
+   "ash": 17.0,
+   "asot": 7.0,
+   "ay": 2.0,
    "ar": 0.0,
-   "acor": 3.0,
-   "scorers": []
+   "acor": 12.0,
+   "scorers": [
+    [
+     "Austria",
+     "Sasa Kalajdzic",
+     "78'"
+    ]
+   ]
   }
  },
  {
@@ -1559,21 +1565,27 @@
    ]
   },
   "actual": {
-   "state": "in",
-   "detail": "45'",
-   "hg": 0,
+   "state": "post",
+   "detail": "FT",
+   "hg": 1,
    "ag": 0,
-   "hsh": 7.0,
-   "hsot": 2.0,
-   "hy": 0.0,
+   "hsh": 15.0,
+   "hsot": 5.0,
+   "hy": 1.0,
    "hr": 0.0,
-   "hcor": 2.0,
-   "ash": 2.0,
-   "asot": 1.0,
+   "hcor": 4.0,
+   "ash": 7.0,
+   "asot": 2.0,
    "ay": 0.0,
    "ar": 0.0,
-   "acor": 0.0,
-   "scorers": []
+   "acor": 2.0,
+   "scorers": [
+    [
+     "Northern Ireland",
+     "Terry Devlin",
+     "68'"
+    ]
+   ]
   }
  },
  {
@@ -1868,25 +1880,45 @@
    ]
   },
   "actual": {
-   "state": "in",
-   "detail": "45'+1'",
-   "hg": 0,
-   "ag": 1,
-   "hsh": 5.0,
-   "hsot": 3.0,
-   "hy": 0.0,
+   "state": "post",
+   "detail": "FT",
+   "hg": 1,
+   "ag": 4,
+   "hsh": 15.0,
+   "hsot": 8.0,
+   "hy": 2.0,
    "hr": 0.0,
-   "hcor": 2.0,
-   "ash": 7.0,
-   "asot": 2.0,
+   "hcor": 6.0,
+   "ash": 17.0,
+   "asot": 6.0,
    "ay": 0.0,
    "ar": 0.0,
-   "acor": 4.0,
+   "acor": 7.0,
    "scorers": [
     [
      "Denmark",
      "Pierre-Emile Højbjerg",
      "43'"
+    ],
+    [
+     "Denmark",
+     "Rasmus Højlund",
+     "49'"
+    ],
+    [
+     "Denmark",
+     "Rasmus Højlund",
+     "57'"
+    ],
+    [
+     "Denmark",
+     "Joachim Andersen",
+     "75'"
+    ],
+    [
+     "Portugal",
+     "Bernardo Silva",
+     "90'+3'"
     ]
    ]
   }
@@ -2183,21 +2215,37 @@
    ]
   },
   "actual": {
-   "state": "in",
-   "detail": "45'",
-   "hg": 0,
-   "ag": 0,
-   "hsh": 4.0,
-   "hsot": 0.0,
-   "hy": 1.0,
+   "state": "post",
+   "detail": "FT",
+   "hg": 2,
+   "ag": 1,
+   "hsh": 11.0,
+   "hsot": 4.0,
+   "hy": 5.0,
    "hr": 0.0,
-   "hcor": 1.0,
-   "ash": 6.0,
-   "asot": 0.0,
-   "ay": 1.0,
+   "hcor": 4.0,
+   "ash": 15.0,
+   "asot": 3.0,
+   "ay": 2.0,
    "ar": 0.0,
-   "acor": 3.0,
-   "scorers": []
+   "acor": 7.0,
+   "scorers": [
+    [
+     "Romania",
+     "Alexandru Cicaldau",
+     "68'"
+    ],
+    [
+     "Romania",
+     "Dennis Man",
+     "72'"
+    ],
+    [
+     "Poland",
+     "Marcel Regula",
+     "82'"
+    ]
+   ]
   }
  },
  {
@@ -2492,20 +2540,20 @@
    ]
   },
   "actual": {
-   "state": "in",
-   "detail": "45'+2'",
-   "hg": 2,
-   "ag": 0,
-   "hsh": 8.0,
-   "hsot": 4.0,
-   "hy": 0.0,
+   "state": "post",
+   "detail": "FT",
+   "hg": 3,
+   "ag": 2,
+   "hsh": 13.0,
+   "hsot": 7.0,
+   "hy": 1.0,
    "hr": 0.0,
-   "hcor": 1.0,
-   "ash": 7.0,
-   "asot": 1.0,
+   "hcor": 3.0,
+   "ash": 16.0,
+   "asot": 7.0,
    "ay": 0.0,
    "ar": 0.0,
-   "acor": 1.0,
+   "acor": 7.0,
    "scorers": [
     [
      "Sweden",
@@ -2516,6 +2564,21 @@
      "Sweden",
      "Viktor Gyökeres",
      "11'"
+    ],
+    [
+     "Sweden",
+     "Viktor Gyökeres",
+     "45'+2'"
+    ],
+    [
+     "Bosnia-Herzegovina",
+     "Armin Gigovic",
+     "47'"
+    ],
+    [
+     "Bosnia-Herzegovina",
+     "Sead Kolasinac",
+     "62'"
     ]
    ]
   }

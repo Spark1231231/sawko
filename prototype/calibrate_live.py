@@ -19,9 +19,10 @@ if __name__ == "__main__":
     rows = z["rows"]
     hg, ag = w.hg.values[rows], w.ag.values[rows]
     hf = (~w.neutral.values[rows]).astype(float)
-    out = dict(rho=rho, features=["1", "log λ_sila", "log λ_sila súper", "log λ_elo", "log λ_elo súper", "doma"])
+    feats = [(z["lh"], z["la"]), (z["sh"], z["sa"]), (z["eh"], z["ea"])]
+    out = dict(rho=rho, features=["1", "log λ_sila", "log λ_sila súper", "log λ_strely", "log λ_strely súper", "log λ_elo", "log λ_elo súper", "doma"])
     for name, pop in (("uefa", calpop(w)[rows]), ("world", (w.cls.values[rows] >= 2))):
-        beta, theta = C.fit_calibration(z["lh"][pop], z["la"][pop], z["eh"][pop], z["ea"][pop], hf[pop], hg[pop], ag[pop], rho)
+        beta, theta = C.fit_calibration([(a[pop], b[pop]) for a, b in feats], hf[pop], hg[pop], ag[pop], rho)
         out[name] = dict(beta=list(map(float, beta)), theta=list(map(float, theta)), n=int(pop.sum()))
         print(name, int(pop.sum()), "beta", beta.round(3), "theta", theta.round(3))
     out["beta"], out["theta"], out["n"] = out["uefa"]["beta"], out["uefa"]["theta"], out["uefa"]["n"]

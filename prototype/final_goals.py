@@ -50,6 +50,8 @@ if __name__ == "__main__":
     z = np.load(E.PROC / "wide_walk.npz")
     rows = z["rows"]
     ls_h, ls_a, le_h, le_a = z["lh"], z["la"], z["eh"], z["ea"]
+    FEATS = [(z["lh"], z["la"]), (z["sh"], z["sa"]), (z["eh"], z["ea"])]      # sila z gólov, sila zo striel, Elo
+    sub = lambda mask: [(a[mask], b[mask]) for a, b in FEATS]
     hg, ag = w.hg.values[rows], w.ag.values[rows]
     hf = (~w.neutral.values[rows]).astype(float)
     year = w.dt.dt.year.values[rows]
@@ -65,18 +67,13 @@ if __name__ == "__main__":
     cals = {}
     for y in range(2018, 2027):
         tr = pop & (year < y)
-        cal = C.fit_calibration(ls_h[tr], ls_a[tr], le_h[tr], le_a[tr], hf[tr], hg[tr], ag[tr], rho)
+        cal = C.fit_calibration(sub(tr), hf[tr], hg[tr], ag[tr], rho)
         cals[y] = cal
         sel = ev & (year == y)
         if sel.any():
-            ch[sel], ca[sel], M[sel], P[sel] = C.predict_calibrated(cal, ls_h[sel], ls_a[sel], le_h[sel], le_a[sel], hf[sel], rho)
+            ch[sel], ca[sel], M[sel], P[sel] = C.predict_calibrated(cal, sub(sel), hf[sel], rho)
         print(y, "train", int(tr.sum()), "beta", cal[0].round(3), "theta", cal[1].round(3), flush=True)
-    # kalibrácia pre ostré predpovede: všetko, čo je k dispozícii
-    live = C.fit_calibration(ls_h[pop], ls_a[pop], le_h[pop], le_a[pop], hf[pop], hg[pop], ag[pop], rho)
-    (E.ROOT / "results" / "calibration.json").write_text(json.dumps(
-        dict(beta=list(map(float, live[0])), theta=list(map(float, live[1])), rho=rho, n=int(pop.sum()),
-             features=["1", "log λ_sila", "log λ_sila súper", "log λ_elo", "log λ_elo súper", "doma"]), indent=1))
-    print("live", "beta", live[0].round(3), "theta", live[1].round(3))
+    # kalibráciu pre ostré predpovede (uefa + world) počíta calibrate_live.py
 
     # ---------------------------------------------------------------- replika prístupu webu
     ws = w[w.comp.isin(SITE_COMPS) & (w.date >= "2016-07-01")].reset_index(drop=True)

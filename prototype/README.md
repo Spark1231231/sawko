@@ -88,12 +88,16 @@ Z out-of-sample predpovedí príbuzných zápasov (súťažné zápasy zóny UEF
 rok nanovo naučí:
 
 ```
-stack:  log λ* = a + b·log λ_sila + c·log λ_sila,súper + d·log λ_elo + e·log λ_elo,súper + f·[doma]
-        (aktuálne  b = 0,94  c = −0,17  d = 0,38  e = 0,35)
+stack:  log λ* = a + Σ_k [ b_k·log λ_k + c_k·log λ_k,súper ] + f·[doma]
+        k = sila z gólov (b = 0,89, c = −0,15), sila zo všetkých striel (0,09, −0,09), Elo (0,37, 0,35)
 
-recal:  log(p1/px)* = α1 + β1·log(p1/px)        β1 = 1,11
+recal:  log(p1/px)* = α1 + β1·log(p1/px)        β1 = 1,13
         log(p2/px)* = α2 + β2·log(p2/px)        β2 = 1,24
 ```
+
+„Sila zo všetkých striel“ je ten istý MAP fit ako v 2.1, len cieľom nie sú góly, ale počet striel tímu –
+meria, kto zápasy ovláda. Na pomer λ pôsobí koeficientom 0,09 − (−0,09) = 0,18, teda tímu, ktorý súperov
+prestrieľava, pridá a jeho súperovi uberie (pridané v iterácii 27, pozri nižšie).
 
 `recal` je zovšeobecnené Plattovo škálovanie – robí to isté čo stretch webu, ale je naučené na správnej
 populácii, zvlášť pre domácich a hostí, a nezasahuje do očakávaných gólov.
@@ -165,6 +169,18 @@ zápasov) slúži len na záverečné porovnanie. Metrika: log-loss 1/X/2 (niž�
 | 17 | karty: predpovedaná „faulovosť“ tímov ako ďalší príznak | súčet NLL 2,0945 → 2,0905, ale test 2,1300 → 2,1322 | zamietnuté (nekonzistentné) |
 | 18 | góly: zloženie základnej jedenástky (koľko streleckej sily a stálych hráčov nastúpi) | koeficienty nevýznamné (z < 1,8), test NLL horší | zamietnuté – úpravu „marodka“ sa na reprezentačných dátach nepodarilo potvrdiť |
 | 19 | kalibrácia podľa populácie: dva európske tímy „uefa“, inak „world“ | mimo Európy sklony ≈ 1,0 a 1,1 (favorit tam podhodnotený nie je) | prijaté |
+| 20 | audit: konvergencia fitov, únik cez konverziu striel, duplicitné zápasy | rozdiel fitov 0,0003; konverzia 0,341–0,347; duplicity sú skutočné dvojzápasy | bez nálezu |
+| 21 | minulé kurzy ako cieľ učenia sily (kurzy sú menej zašumené než góly) | ladenie −0,0015, ale test +0,0045 | zamietnuté |
+| 22 | viac polčasov útlmu naraz (250 / 650 / 2000 dní) | ±0,0003 | zamietnuté |
+| 23 | audit ostrej predpovede: počty kŕmené rozdielom síl z trhu (model je učený na rozdiele z modelu) | tímové NLL na teste: strely 2,9040 → 2,8983, na bránu 2,1272 → 2,1116, žlté 1,6271 → 1,6230 | správanie potvrdené |
+| 24 | audit ostrej predpovede: strelci s gólmi tímu zo zmesi s trhom | 0,2569 → 0,2562 (ladenie aj test −0,0006) | správanie potvrdené |
+| 25 | strelci: „zaostrenie“ podielov (θ^γ) | každé γ > 1 horšie | zamietnuté |
+| 26 | počty: očakávaný súčet gólov ako príznak; ladenie zmrštenia a polčasu pre každý druh zvlášť | príznak bez zisku; strely polčas 600 → 350: ladenie 5,9684 → 5,9596, test 6,1290 → 6,1173 | polčas striel prijatý, ostatné bez zmeny |
+| 27 | **góly: sila tímu odhadnutá zo všetkých striel ako tretí vstup stackingu** | ladenie 0,8160 → 0,8144; test 0,8052 → 0,8019, párový rozdiel **−0,0033 [−0,0057; −0,0010]** | **prijaté – overené zlepšenie** |
+
+Iterácia 27 je robustná: pri každom skúšanom nastavení modelu zo striel (polčas 300–2500 dní, rôzne priory, váha
+prípravných zápasov) vyšlo na ladení −0,0015 až −0,0021 a na teste −0,0029 až −0,0036 s intervalom pod nulou
+(`experiment.py`). Samotné strely na bránu alebo rohy ako ďalší vstup dali na ladení len −0,0003.
 
 ---
 
@@ -177,27 +193,27 @@ zápasov) slúži len na záverečné porovnanie. Metrika: log-loss 1/X/2 (niž�
 | konštantný tip | 1,0563 | 1,0638 | 44 % | – |
 | Elo | 0,8333 | 0,8257 | 62,5 % | 0,1580 |
 | replika prístupu webu (ESPN 6 r., nezávislé priory, stretch 1,46) | 0,8240 | 0,8102 | 62,9 % | 0,1527 |
-| **prototyp (len model)** | **0,8153** | **0,8049** | **64,2 %** | **0,1508** |
+| **prototyp (len model)** | **0,8140** | **0,8015** | **64,5 %** | **0,1500** |
 
-Párový rozdiel prototyp − replika webu na všetkých 1 998 zápasoch: **−0,0075**, 95 % bootstrap interval
-[−0,0138; −0,0010] – zlepšenie je štatisticky významné, ale malé. Replika je moja rekonštrukcia architektúry
+Párový rozdiel prototyp − replika webu na všetkých 1 998 zápasoch: **−0,0096**, 95 % bootstrap interval
+[−0,0165; −0,0021] – zlepšenie je štatisticky významné, ale malé. Replika je moja rekonštrukcia architektúry
 webu s najpriaznivejším nastavením, nie jeho presný kód.
 
-Kalibrácia prototypu (všetky tri výsledky, 1 998 zápasov): keď model povie 55 %, stane sa to v 57 %;
-65 % → 67 %; 75 % → 78 %; 85 % → 84 %; 95 % → 96 %.
+Kalibrácia prototypu (všetky tri výsledky, 1 998 zápasov): keď model povie 55 %, stane sa to v 55 %;
+65 % → 65 %; 75 % → 76 %; 85 % → 82 %; 95 % → 96 %.
 
 ### 4.2 Proti trhu (zápasy so záverečnými kurzmi DraftKings z ESPN)
 
 | | ladenie (261) | test (574) |
 |---|---|---|
 | trh (kurzy bez marže) | **0,7480** | 0,7643 |
-| prototyp (len model) | 0,7658 | 0,7815 |
+| prototyp (len model) | 0,7632 | 0,7773 |
 | replika webu (len model) | 0,7746 | 0,7900 |
-| 85 % trh + 15 % prototyp | 0,7489 | **0,7639** |
+| 85 % trh + 15 % prototyp | **0,7479** | **0,7633** |
 
 Trh je stále lepší než akýkoľvek model z výsledkov (vie o zostavách, zraneniach, forme hráčov v kluboch).
-Prototyp zmazal asi tretinu odstupu modelu od trhu (0,0257 → 0,0172). Mix s trhom je na úrovni samotného trhu –
-preto je finálna predpoveď 85 % trh.
+Prototyp zmazal polovicu odstupu modelu od trhu (0,0257 → 0,0130). Mix s trhom je tesne lepší než samotný trh
+(rozdiel je v rámci šumu) – preto je finálna predpoveď 85 % trh.
 
 ### 4.3 Priame porovnanie s modelom webu (33 nadchádzajúcich zápasov, 14. 11. 2026)
 
@@ -205,17 +221,17 @@ Vzdialenosť „len modelu“ od trhu na tých istých zápasoch (`results/site_
 
 | | web | prototyp |
 |---|---|---|
-| KL-divergencia od trhu (1/X/2) | 0,0221 | **0,0170** |
-| priem. chyba λ voči trhu | 0,239 | **0,154** |
-| priem. súčet gólov (trh 2,79) | 2,52 | 2,66 |
-| bližšie k trhu v zápasoch | 11 | **22** |
+| KL-divergencia od trhu (1/X/2) | 0,0221 | **0,0168** |
+| priem. chyba λ voči trhu | 0,239 | **0,152** |
+| priem. súčet gólov (trh 2,79) | 2,52 | 2,67 |
+| bližšie k trhu v zápasoch | 8 | **25** |
 
 ### 4.4 Počty (test 2024–2026, súčet za zápas; model / najlepšia možná konštanta)
 
 | | NLL súčtu | over/under log-loss | MAE | len útok/obrana (ako web) |
 |---|---|---|---|---|
 | žlté karty | 2,130 / 2,181 | 3,5: **0,664** / 0,693 · 4,5: **0,619** / 0,649 | 1,70 / 1,78 | 3,5: 0,687 · 4,5: 0,648 |
-| strely | 3,223 / 3,243 | 24,5: **0,683** / 0,693 | 4,86 / 5,02 | 24,5: 0,711 (horšie než konštanta) |
+| strely | 3,215 / 3,243 | 24,5: **0,677** / 0,693 | 4,82 / 5,02 | 24,5: 0,711 (horšie než konštanta) |
 | strely na bránu | 2,541 / 2,572 | 8,5: **0,673** / 0,693 | 2,48 / 2,57 | 8,5: 0,688 |
 | rohy | 2,593 / 2,617 | 9,5: **0,673** / 0,688 | 2,63 / 2,72 | 9,5: 0,689 |
 
@@ -230,12 +246,27 @@ zápasov (model hovorí 26 %). Reprezentačná história sama veľa nepridá –
 
 ---
 
+### 4.6 Ako dopadli ostré predpovede zo 14. 11. 2026
+
+Predpovede 8 zápasov Ligy národov vznikli o 16:04 UTC (pred výkopmi, commit `6bebca3`), Haiti – USA o 20:28 UTC
+(commit `8a0fb31`). Tabuľka je v `results/today_2026-11-14.md`.
+
+- tip na výsledok trafený v 6 z 9 zápasov; log-loss 8 zápasov LN 0,978 (konštantný tip ≈ 1,06);
+- presné skóre 1 z 9 (Rakúsko – Írsko 1:0), v troch najpravdepodobnejších skóre 2 z 8 zápasov LN;
+- góly spolu v LN 21, očakávaných 21,9;
+- žlté karty: priemerná chyba 1,7, v 80 % intervale 8 z 8; strely: priemerná chyba 4,1, v intervale 7 z 8;
+- hlavný zápas Portugalsko – Dánsko skončil **1:4** – tip na Portugalsko (61 %) nevyšiel; strely 32 (čakané 26,1),
+  žlté 2 (čakané 3,5), z tipovaných strelcov skóroval Højlund;
+- Haiti – USA **0:6** – tip na USA (77 %) vyšiel, strely 20 (čakané 25,0), žlté 3 (čakané 3,1).
+
+Deväť zápasov nič nedokazuje ani nevyvracia; o spoľahlivosti hovoria backtesty vyššie.
+
 ## 5. Čo z toho preniesť do webu
 
 1. Prior na **silu a štýl** namiesto útoku a obrany; silu takmer nezmršťovať.
 2. Plošný stretch nahradiť **rekalibráciou 1/X/2** učenou rolling-origin na príbuzných zápasoch
    (`calib.py`, 4 čísla).
-3. Pridať **svetové výsledky a Elo** ako druhý vstup (stacking).
+3. Pridať **svetové výsledky a Elo** ako druhý vstup a **silu zo všetkých striel** ako tretí (stacking).
 4. **Vypnúť H2H faktor** – nenesie informáciu.
 5. Pri počtoch pridať **regresiu na rozdiel síl** (`counts.py`) – najväčší relatívny zisk.
 6. Strelcov počítať riedením s normovaním podielov a **góly brať z udalostí zápasu**.

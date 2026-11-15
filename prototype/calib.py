@@ -17,23 +17,28 @@ from scipy.optimize import minimize
 import engine as E
 
 
-def _design(ls_own, ls_opp, le_own, le_opp, home):
-    return np.column_stack([np.ones_like(ls_own), np.log(ls_own), np.log(ls_opp), np.log(le_own), np.log(le_opp), home])
+def _design(feats, hf, side):
+    """feats: zoznam dvojíc (λ_dom, λ_host) z jednotlivých modelov. side 0 = pohľad domácich, 1 = hostí."""
+    hf = np.atleast_1d(np.asarray(hf, float))
+    cols = [np.ones(len(hf))]
+    for lh, la in feats:
+        lh, la = np.atleast_1d(np.asarray(lh, float)), np.atleast_1d(np.asarray(la, float))
+        own, opp = (lh, la) if side == 0 else (la, lh)
+        cols += [np.log(own), np.log(opp)]
+    cols.append(hf if side == 0 else np.zeros(len(hf)))
+    return np.column_stack(cols)
 
 
-def fit_stack(ls_h, ls_a, le_h, le_a, hf, hg, ag, wt=None):
-    """Stacking: skutočné góly ~ Poisson(exp(a + b·log λ_sila + c·log λ_sila,súper + d·log λ_elo + e·log λ_elo,súper + f·doma))."""
-    z = np.zeros_like(hf)
-    X = np.vstack([_design(ls_h, ls_a, le_h, le_a, hf), _design(ls_a, ls_h, le_a, le_h, z)])
+def fit_stack(feats, hf, hg, ag, wt=None):
+    """Stacking: skutočné góly ~ Poisson(exp(a + Σ_k [b_k·log λ_k,vlastné + c_k·log λ_k,súper] + f·doma))."""
+    X = np.vstack([_design(feats, hf, 0), _design(feats, hf, 1)])
     y = np.concatenate([np.minimum(hg, 8), np.minimum(ag, 8)])
     ww = None if wt is None else np.concatenate([wt, wt])
     return E.glm_poisson(X, y, ww, ridge=1e-3)
 
 
-def apply_stack(beta, ls_h, ls_a, le_h, le_a, hf):
-    ls_h, ls_a, le_h, le_a, hf = (np.atleast_1d(np.asarray(x, float)) for x in (ls_h, ls_a, le_h, le_a, hf))
-    z = np.zeros_like(hf)
-    return np.exp(_design(ls_h, ls_a, le_h, le_a, hf) @ beta), np.exp(_design(ls_a, ls_h, le_a, le_h, z) @ beta)
+def apply_stack(beta, feats, hf):
+    return np.exp(_design(feats, hf, 0) @ beta), np.exp(_design(feats, hf, 1) @ beta)
 
 
 def _recal_probs(theta, x1, x2):
@@ -77,19 +82,19 @@ def outcome(hg, ag):
     return np.where(hg > ag, 0, np.where(hg == ag, 1, 2))
 
 
-def fit_calibration(ls_h, ls_a, le_h, le_a, hf, hg, ag, rho=-0.06, wt=None):
+def fit_calibration(feats, hf, hg, ag, rho=-0.06, wt=None):
     """Naučí (beta, theta) z out-of-sample predpovedí."""
-    beta = fit_stack(ls_h, ls_a, le_h, le_a, hf, hg, ag, wt)
-    ch, ca = apply_stack(beta, ls_h, ls_a, le_h, le_a, hf)
+    beta = fit_stack(feats, hf, hg, ag, wt)
+    ch, ca = apply_stack(beta, feats, hf)
     P = E.outcome_probs(E.score_matrix(ch, ca, rho))
     theta = fit_recal(P, outcome(hg, ag), wt)
     return beta, theta
 
 
-def predict_calibrated(cal, ls_h, ls_a, le_h, le_a, hf, rho=-0.06):
+def predict_calibrated(cal, feats, hf, rho=-0.06):
     """(beta, theta) -> kalibrované λ, matica skóre (po oblastiach preškálovaná) a 1/X/2."""
     beta, theta = cal
-    ch, ca = apply_stack(beta, ls_h, ls_a, le_h, le_a, hf)
+    ch, ca = apply_stack(beta, feats, hf)
     M = E.score_matrix(ch, ca, rho)
     P = apply_recal(theta, E.outcome_probs(M))
     return ch, ca, reweight(M, P), P
