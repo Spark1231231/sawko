@@ -1,0 +1,695 @@
+{
+ "obdobie": [
+  "2018-09-06",
+  "2026-11-17"
+ ],
+ "n": 2032,
+ "tip": {
+  "prototyp": 0.6451771653543307,
+  "vzdy_domaci": 0.4463582677165354,
+  "web_like": 0.6259842519685039,
+  "tip_remiza_pocet": 1,
+  "skutocne_remizy": 0.21751968503937008
+ },
+ "podla_istoty": [
+  {
+   "kos": "(0.33, 0.45]",
+   "n": 394,
+   "predpoved": 0.4007547920287939,
+   "uspesnost": 0.4365482233502538
+  },
+  {
+   "kos": "(0.45, 0.55]",
+   "n": 380,
+   "predpoved": 0.4979076722308194,
+   "uspesnost": 0.5131578947368421
+  },
+  {
+   "kos": "(0.55, 0.65]",
+   "n": 371,
+   "predpoved": 0.5993851794726209,
+   "uspesnost": 0.5902964959568733
+  },
+  {
+   "kos": "(0.65, 0.75]",
+   "n": 277,
+   "predpoved": 0.6980981459924084,
+   "uspesnost": 0.7184115523465704
+  },
+  {
+   "kos": "(0.75, 0.85]",
+   "n": 253,
+   "predpoved": 0.8002648829964688,
+   "uspesnost": 0.7865612648221344
+  },
+  {
+   "kos": "(0.85, 1.0]",
+   "n": 357,
+   "predpoved": 0.9296064569645036,
+   "uspesnost": 0.9159663865546218
+  }
+ ],
+ "podla_roka": {
+  "2018": {
+   "n": 138,
+   "uspesnost": 0.6304347826086957
+  },
+  "2019": {
+   "n": 253,
+   "uspesnost": 0.7509881422924901
+  },
+  "2020": {
+   "n": 174,
+   "uspesnost": 0.5287356321839081
+  },
+  "2021": {
+   "n": 294,
+   "uspesnost": 0.6768707482993197
+  },
+  "2022": {
+   "n": 231,
+   "uspesnost": 0.5411255411255411
+  },
+  "2023": {
+   "n": 234,
+   "uspesnost": 0.688034188034188
+  },
+  "2024": {
+   "n": 216,
+   "uspesnost": 0.5972222222222222
+  },
+  "2025": {
+   "n": 219,
+   "uspesnost": 0.6894977168949772
+  },
+  "2026": {
+   "n": 273,
+   "uspesnost": 0.6483516483516484
+  }
+ },
+ "podla_sutaze": {
+  "MS": {
+   "n": 164,
+   "uspesnost": 0.6219512195121951
+  },
+  "kvalifikácia MS (UEFA)": {
+   "n": 461,
+   "uspesnost": 0.6984815618221258
+  },
+  "ME": {
+   "n": 89,
+   "uspesnost": 0.5730337078651685
+  },
+  "kvalifikácia ME": {
+   "n": 501,
+   "uspesnost": 0.7145708582834331
+  },
+  "Liga národov": {
+   "n": 817,
+   "uspesnost": 0.5850673194614443
+  }
+ },
+ "s_kurzami": {
+  "n": 868,
+  "prototyp": 0.6658986175115207,
+  "trh": 0.6705069124423964,
+  "finalna_zmes": 0.6693548387096774,
+  "web_like": 0.6497695852534562
+ },
+ "skore": {
+  "presne_top1": 0.1481299212598425,
+  "v_top3": 0.3843503937007874,
+  "v_top5": 0.5802165354330708,
+  "top1_predpoved": 0.1460328924903521
+ },
+ "goly": {
+  "nad_pod_25": 0.5807086614173228,
+  "nad_25_skutocne": 0.5187007874015748,
+  "nad_pod_25_iste": {
+   "n": 483,
+   "uspesnost": 0.6873706004140787
+  },
+  "nad_15": 0.7696850393700787,
+  "obaja_skoruju": 0.5816929133858267,
+  "obaja_skutocne": 0.45029527559055116,
+  "priemer_golov_skutocny": 2.8164370078740157,
+  "priemer_golov_predpoved": 2.7420059036159095
+ },
+ "silne_tipy_70": {
+  "n": 739,
+  "uspesnost": 0.8443843031123139,
+  "predpoved": 0.8493994702847514
+ },
+ "dvojita_sanca_favorita": {
+  "n": 2031,
+  "uspesnost": 0.8621368783850321,
+  "predpoved": 0.8473389847633181
+ },
+ "najnovsie": {
+  "n": 34,
+  "uspesnost": 0.6470588235294118,
+  "zapasy": [
+   {
+    "datum": "2026-11-14",
+    "dom": "Norway",
+    "host": "Wales",
+    "skore": "3:1",
+    "p": [
+     0.613,
+     0.231,
+     0.156
+    ],
+    "tip": "1",
+    "trafene": true,
+    "top_skore": "1:0"
+   },
+   {
+    "datum": "2026-11-14",
+    "dom": "Portugal",
+    "host": "Denmark",
+    "skore": "1:4",
+    "p": [
+     0.574,
+     0.24,
+     0.186
+    ],
+    "tip": "1",
+    "trafene": false,
+    "top_skore": "1:1"
+   },
+   {
+    "datum": "2026-11-14",
+    "dom": "Northern Ireland",
+    "host": "Ukraine",
+    "skore": "1:0",
+    "p": [
+     0.344,
+     0.308,
+     0.348
+    ],
+    "tip": "2",
+    "trafene": false,
+    "top_skore": "1:1"
+   },
+   {
+    "datum": "2026-11-14",
+    "dom": "Georgia",
+    "host": "Hungary",
+    "skore": "0:2",
+    "p": [
+     0.305,
+     0.291,
+     0.403
+    ],
+    "tip": "2",
+    "trafene": true,
+    "top_skore": "1:1"
+   },
+   {
+    "datum": "2026-11-14",
+    "dom": "Kosovo",
+    "host": "Israel",
+    "skore": "0:0",
+    "p": [
+     0.525,
+     0.25,
+     0.225
+    ],
+    "tip": "1",
+    "trafene": false,
+    "top_skore": "1:1"
+   },
+   {
+    "datum": "2026-11-14",
+    "dom": "Austria",
+    "host": "Republic of Ireland",
+    "skore": "1:0",
+    "p": [
+     0.637,
+     0.232,
+     0.131
+    ],
+    "tip": "1",
+    "trafene": true,
+    "top_skore": "1:0"
+   },
+   {
+    "datum": "2026-11-14",
+    "dom": "Sweden",
+    "host": "Bosnia and Herzegovina",
+    "skore": "3:2",
+    "p": [
+     0.59,
+     0.233,
+     0.176
+    ],
+    "tip": "1",
+    "trafene": true,
+    "top_skore": "1:1"
+   },
+   {
+    "datum": "2026-11-14",
+    "dom": "Romania",
+    "host": "Poland",
+    "skore": "2:1",
+    "p": [
+     0.265,
+     0.264,
+     0.472
+    ],
+    "tip": "2",
+    "trafene": false,
+    "top_skore": "1:1"
+   },
+   {
+    "datum": "2026-11-15",
+    "dom": "Belgium",
+    "host": "Italy",
+    "skore": "4:1",
+    "p": [
+     0.461,
+     0.257,
+     0.282
+    ],
+    "tip": "1",
+    "trafene": true,
+    "top_skore": "1:1"
+   },
+   {
+    "datum": "2026-11-15",
+    "dom": "France",
+    "host": "Turkey",
+    "skore": "2:1",
+    "p": [
+     0.777,
+     0.15,
+     0.074
+    ],
+    "tip": "1",
+    "trafene": true,
+    "top_skore": "2:0"
+   },
+   {
+    "datum": "2026-11-15",
+    "dom": "Croatia",
+    "host": "Czech Republic",
+    "skore": "2:1",
+    "p": [
+     0.628,
+     0.221,
+     0.151
+    ],
+    "tip": "1",
+    "trafene": true,
+    "top_skore": "2:0"
+   },
+   {
+    "datum": "2026-11-15",
+    "dom": "Spain",
+    "host": "England",
+    "skore": "2:3",
+    "p": [
+     0.577,
+     0.247,
+     0.176
+    ],
+    "tip": "1",
+    "trafene": false,
+    "top_skore": "1:0"
+   },
+   {
+    "datum": "2026-11-15",
+    "dom": "Belarus",
+    "host": "Albania",
+    "skore": "0:2",
+    "p": [
+     0.197,
+     0.283,
+     0.521
+    ],
+    "tip": "2",
+    "trafene": true,
+    "top_skore": "0:1"
+   },
+   {
+    "datum": "2026-11-15",
+    "dom": "Finland",
+    "host": "San Marino",
+    "skore": "7:2",
+    "p": [
+     0.957,
+     0.038,
+     0.005
+    ],
+    "tip": "1",
+    "trafene": true,
+    "top_skore": "3:0"
+   },
+   {
+    "datum": "2026-11-15",
+    "dom": "Cyprus",
+    "host": "Montenegro",
+    "skore": "1:4",
+    "p": [
+     0.314,
+     0.277,
+     0.409
+    ],
+    "tip": "2",
+    "trafene": true,
+    "top_skore": "1:1"
+   },
+   {
+    "datum": "2026-11-15",
+    "dom": "Latvia",
+    "host": "Armenia",
+    "skore": "0:0",
+    "p": [
+     0.238,
+     0.284,
+     0.478
+    ],
+    "tip": "2",
+    "trafene": false,
+    "top_skore": "1:1"
+   },
+   {
+    "datum": "2026-11-16",
+    "dom": "Germany",
+    "host": "Netherlands",
+    "skore": "5:0",
+    "p": [
+     0.47,
+     0.248,
+     0.282
+    ],
+    "tip": "1",
+    "trafene": true,
+    "top_skore": "1:1"
+   },
+   {
+    "datum": "2026-11-16",
+    "dom": "Greece",
+    "host": "Serbia",
+    "skore": "1:0",
+    "p": [
+     0.524,
+     0.267,
+     0.209
+    ],
+    "tip": "1",
+    "trafene": true,
+    "top_skore": "1:1"
+   },
+   {
+    "datum": "2026-11-16",
+    "dom": "North Macedonia",
+    "host": "Slovenia",
+    "skore": "0:3",
+    "p": [
+     0.194,
+     0.29,
+     0.517
+    ],
+    "tip": "2",
+    "trafene": true,
+    "top_skore": "0:1"
+   },
+   {
+    "datum": "2026-11-16",
+    "dom": "Switzerland",
+    "host": "Scotland",
+    "skore": "4:0",
+    "p": [
+     0.685,
+     0.207,
+     0.108
+    ],
+    "tip": "1",
+    "trafene": true,
+    "top_skore": "2:0"
+   },
+   {
+    "datum": "2026-11-16",
+    "dom": "Faroe Islands",
+    "host": "Moldova",
+    "skore": "1:0",
+    "p": [
+     0.482,
+     0.284,
+     0.234
+    ],
+    "tip": "1",
+    "trafene": true,
+    "top_skore": "1:1"
+   },
+   {
+    "datum": "2026-11-16",
+    "dom": "Kazakhstan",
+    "host": "Slovakia",
+    "skore": "2:2",
+    "p": [
+     0.129,
+     0.216,
+     0.655
+    ],
+    "tip": "2",
+    "trafene": false,
+    "top_skore": "0:1"
+   },
+   {
+    "datum": "2026-11-16",
+    "dom": "Iceland",
+    "host": "Luxembourg",
+    "skore": "3:0",
+    "p": [
+     0.674,
+     0.213,
+     0.113
+    ],
+    "tip": "1",
+    "trafene": true,
+    "top_skore": "2:0"
+   },
+   {
+    "datum": "2026-11-16",
+    "dom": "Estonia",
+    "host": "Bulgaria",
+    "skore": "2:1",
+    "p": [
+     0.367,
+     0.3,
+     0.333
+    ],
+    "tip": "1",
+    "trafene": true,
+    "top_skore": "1:1"
+   },
+   {
+    "datum": "2026-11-16",
+    "dom": "Gibraltar",
+    "host": "Malta",
+    "skore": "1:1",
+    "p": [
+     0.091,
+     0.215,
+     0.694
+    ],
+    "tip": "2",
+    "trafene": false,
+    "top_skore": "0:1"
+   },
+   {
+    "datum": "2026-11-16",
+    "dom": "Lithuania",
+    "host": "Liechtenstein",
+    "skore": "2:1",
+    "p": [
+     0.879,
+     0.104,
+     0.017
+    ],
+    "tip": "1",
+    "trafene": true,
+    "top_skore": "2:0"
+   },
+   {
+    "datum": "2026-11-17",
+    "dom": "Wales",
+    "host": "Portugal",
+    "skore": "2:3",
+    "p": [
+     0.135,
+     0.221,
+     0.644
+    ],
+    "tip": "2",
+    "trafene": true,
+    "top_skore": "0:1"
+   },
+   {
+    "datum": "2026-11-17",
+    "dom": "Denmark",
+    "host": "Norway",
+    "skore": "2:3",
+    "p": [
+     0.487,
+     0.247,
+     0.267
+    ],
+    "tip": "1",
+    "trafene": false,
+    "top_skore": "1:1"
+   },
+   {
+    "datum": "2026-11-17",
+    "dom": "Hungary",
+    "host": "Northern Ireland",
+    "skore": "1:1",
+    "p": [
+     0.464,
+     0.308,
+     0.228
+    ],
+    "tip": "1",
+    "trafene": false,
+    "top_skore": "1:0"
+   },
+   {
+    "datum": "2026-11-17",
+    "dom": "Ukraine",
+    "host": "Georgia",
+    "skore": "1:0",
+    "p": [
+     0.457,
+     0.276,
+     0.266
+    ],
+    "tip": "1",
+    "trafene": true,
+    "top_skore": "1:1"
+   },
+   {
+    "datum": "2026-11-17",
+    "dom": "Republic of Ireland",
+    "host": "Kosovo",
+    "skore": "3:0",
+    "p": [
+     0.348,
+     0.305,
+     0.347
+    ],
+    "tip": "1",
+    "trafene": true,
+    "top_skore": "1:1"
+   },
+   {
+    "datum": "2026-11-17",
+    "dom": "Israel",
+    "host": "Austria",
+    "skore": "1:1",
+    "p": [
+     0.14,
+     0.202,
+     0.659
+    ],
+    "tip": "2",
+    "trafene": false,
+    "top_skore": "0:2"
+   },
+   {
+    "datum": "2026-11-17",
+    "dom": "Bosnia and Herzegovina",
+    "host": "Romania",
+    "skore": "2:1",
+    "p": [
+     0.422,
+     0.285,
+     0.293
+    ],
+    "tip": "1",
+    "trafene": true,
+    "top_skore": "1:1"
+   },
+   {
+    "datum": "2026-11-17",
+    "dom": "Poland",
+    "host": "Sweden",
+    "skore": "1:1",
+    "p": [
+     0.417,
+     0.254,
+     0.33
+    ],
+    "tip": "1",
+    "trafene": false,
+    "top_skore": "1:1"
+   }
+  ]
+ },
+ "pocty": {
+  "žlté karty": {
+   "n": 1889,
+   "ciara": 3.5,
+   "nad_pod": 0.6082583377448385,
+   "nad_pod_iste": {
+    "n": 813,
+    "uspesnost": 0.6715867158671587
+   },
+   "vacsina_strana": 0.5272631021704606,
+   "v_80_intervale": 0.880359978824775,
+   "priem_chyba": 1.6458140469999691,
+   "priemer": 3.865537321334039
+  },
+  "strely": {
+   "n": 1892,
+   "ciara": 24.5,
+   "nad_pod": 0.6014799154334038,
+   "nad_pod_iste": {
+    "n": 1026,
+    "uspesnost": 0.6676413255360624
+   },
+   "vacsina_strana": 0.525369978858351,
+   "v_80_intervale": 0.8187103594080338,
+   "priem_chyba": 4.61951592732661,
+   "priemer": 24.576109936575055
+  },
+  "strely na bránu": {
+   "n": 1892,
+   "ciara": 8.5,
+   "nad_pod": 0.5861522198731501,
+   "nad_pod_iste": {
+    "n": 850,
+    "uspesnost": 0.6352941176470588
+   },
+   "vacsina_strana": 0.5095137420718816,
+   "v_80_intervale": 0.8398520084566596,
+   "priem_chyba": 2.4834775109503044,
+   "priemer": 8.644291754756871
+  },
+  "rohy": {
+   "n": 1892,
+   "ciara": 9.5,
+   "nad_pod": 0.5655391120507399,
+   "nad_pod_iste": {
+    "n": 732,
+    "uspesnost": 0.6352459016393442
+   },
+   "vacsina_strana": 0.5523255813953488,
+   "v_80_intervale": 0.8498942917547568,
+   "priem_chyba": 2.6922940797366235,
+   "priemer": 9.26215644820296
+  }
+ },
+ "strelci": {
+  "n_timov": 2703,
+  "najpravdepodobnejsi_skoruje": 0.27192008879023305,
+  "jeho_predpoved": 0.2618997843028957,
+  "hraci_nad_30": {
+   "n": 1386,
+   "predpoved": 0.39538099739491983,
+   "skutocnost": 0.4235209235209235
+  },
+  "bezny_hrac_zakladu": 0.09023643762822453
+ }
+}

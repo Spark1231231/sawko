@@ -261,6 +261,16 @@ Predpovede 8 zápasov Ligy národov vznikli o 16:04 UTC (pred výkopmi, commit `
 
 Deväť zápasov nič nedokazuje ani nevyvracia; o spoľahlivosti hovoria backtesty vyššie.
 
+### 4.7 Úspešnosť spätne (prehľad pre bežné stávkové trhy)
+
+Celý prehľad je v [`results/success.md`](results/success.md) (`python3 success.py`). Súťažné zápasy európskych
+reprezentácií 2018-08 – 2026-11-17, 2 032 zápasov, walk-forward:
+
+- tip na víťaza **64,5 %** (replika webu 62,6 %, vždy domáci 44,6 %); tipy so šancou ≥ 70 % vyšli v 84,4 %;
+- presné skóre 14,8 %, skutočné skóre v troch najpravdepodobnejších 38,4 %;
+- nad/pod 2,5 gólu 58,1 % (isté tipy 68,7 %), obaja skórujú 58,2 %;
+- karty nad/pod 3,5 60,8 %, strely nad/pod 24,5 60,1 %; najpravdepodobnejší strelec tímu skóroval v 27,2 %.
+
 ## 5. Čo z toho preniesť do webu
 
 1. Prior na **silu a štýl** namiesto útoku a obrany; silu takmer nezmršťovať.
